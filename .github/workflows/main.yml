@@ -14,12 +14,12 @@ jobs:
         uses: actions/cache@v1
         with:
           path: node_modules
-          key: yarn-deps-${{ hashFiles('yarn.lock') }}
+          key: npm-deps-${{ hashFiles('package-lock.json') }}
           restore-keys: |
-            yarn-deps-${{ hashFiles('yarn.lock') }}
+            npm-deps-${{ hashFiles('package-lock,json') }}
       # Build the static site
       - name: Create static build
-        run: npm --prefix frontend install && yarn --prefix frontend build
+        run: npm --prefix frontend install && npm --prefix frontend build
       # Upload the artifact for other stages to use
       - name: Share artifact in github workflow
         uses: actions/upload-artifact@v1
