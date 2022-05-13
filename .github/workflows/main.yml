@@ -20,7 +20,8 @@ jobs:
             yarn-deps-${{ hashFiles('yarn.lock') }}
       # Test the static site
       - name: Test static build
-        run: yarn test     
+        run: yarn test 
+        working-directory: ./frontend    
       # Build the static site
       - name: Create static build
         run: yarn install && yarn build && pwd && ls -altr 
