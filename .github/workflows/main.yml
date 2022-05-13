@@ -14,10 +14,13 @@ jobs:
         uses: actions/cache@v1   
         with:
           path: node_modules
-          key: yarn-deps-${{ hashFiles('yarn.lock') }}
           working-directory: ./frontend
+          key: yarn-deps-${{ hashFiles('yarn.lock') }}
           restore-keys: |
             yarn-deps-${{ hashFiles('yarn.lock') }}
+      # Test the static site
+      - name: Test static build
+        run: yarn test     
       # Build the static site
       - name: Create static build
         run: yarn install && yarn build && pwd && ls -altr 
