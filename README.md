@@ -1,5 +1,7 @@
 # dissertation-frontend
 Frontend Repository for the Dissertation
+See: https://andyjones.co/articles/react-aws-terraform-github-actions/
+
 
 ## Folder Structure
 terraform: Infrastructure as Code (IaC)
@@ -10,7 +12,18 @@ frontend: React frontend code
 Terraform: https://www.terraform.io/
 
 ### Run terraform code
-Executed as part of pipeline
+#### Execute plan
+cd terraform
+terraform init
+terraform plan
+
+#### Create Infrastructure
+cd terraform
+terraform apply --auto-approve
+
+#### Destroy Infrastructure
+cd terraform
+terraform destroy --auto-approve
 
 
 ## Frontend Instructions
@@ -21,3 +34,6 @@ NodeJs: https://nodejs.org/en/
 cd frontend
 npm install
 npm start
+
+### ToDO
+Automate certificate approval after it is created
