@@ -22,10 +22,10 @@ jobs:
         run: yarn install 
         working-directory: ./frontend               
       # Test the React app
-      - name: Test static build
-        run: yarn test 
-        working-directory: ./frontend    
-      # Build the React app
+      # - name: Test static build
+      #   run: yarn test 
+      #   working-directory: ./frontend    
+      # # Build the React app
       - name: Create static build
         run: yarn build && pwd && ls -altr 
         working-directory: ./frontend
