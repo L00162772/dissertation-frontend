@@ -11,8 +11,8 @@ resource "aws_acm_certificate" "frontend_cloudfront_cert" {
 
 
 resource "aws_acm_certificate_validation" "validation" {
-  certificate_arn   = aws_acm_certificate.frontend_cloudfront_cert.arn
-  provider          = aws.east1
+  certificate_arn         = aws_acm_certificate.frontend_cloudfront_cert.arn
+  provider                = aws.east1
   validation_record_fqdns = [for record in aws_route53_record.frontend_cloudfront_route53_validation_record : record.fqdn]
   depends_on = [
     aws_route53_record.frontend_cloudfront_route53_validation_record
