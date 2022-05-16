@@ -160,6 +160,7 @@ jobs:
           
   terraform-destroy:
     name: "Perform Terraform Destroy"
+    if: always()
     runs-on: ubuntu-latest
     needs: terraform-apply
     timeout-minutes: 1440
