@@ -12,9 +12,9 @@ jobs:
       # Cache node modules
       - name: Cache node modules
         uses: actions/cache@v1   
+        working-directory: ./frontend
         with:
           path: node_modules
-          working-directory: ./frontend
           key: yarn-deps-${{ hashFiles('yarn.lock') }}
           restore-keys: |
             yarn-deps-${{ hashFiles('yarn.lock') }}
