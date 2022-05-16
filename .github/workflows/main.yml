@@ -130,7 +130,7 @@ jobs:
       #     echo $elasticbeanstalk_app_cname
   deploy:
     runs-on: ubuntu-latest
-    needs: build
+    needs: terraform-apply
     steps:
       # Download the build artifact
       - name: Get build artifact
