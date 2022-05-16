@@ -122,7 +122,7 @@ jobs:
 
       - name: Terraform Apply
         #if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -auto-approve -var="region=$AWS_REGION"
+        run: terraform apply -var="region=`$AWS_REGION` -auto-approve"
 
       #- name: Get Elastic Beanstalk Endpoint
       #  run: |
