@@ -146,7 +146,10 @@ jobs:
           aws-region: eu-west-1
       # Copy the files from /build to s3 bucket
       - name: Deploy static site to S3 bucket
-        run: aws s3 sync . s3://${{ secrets.S3_BUCKET_NAME }} --delete
+        run: |
+             pwd
+             ls -latr
+             aws s3 sync . s3://${{ secrets.S3_BUCKET_NAME }} --delete
         working-directory: frontend/build
       # Invalidate index file in Cloudfront (this forces edges to fetch the latest index.html)
       - name: invalidate
