@@ -2,7 +2,7 @@
 resource "aws_cloudfront_distribution" "frontend_cloudfront_distribution" {
   enabled = true
   is_ipv6_enabled = true
-  comment = "The cloudfront distribution for frontend_cloudfront_distribution.andyjones.co"
+  comment = "The cloudfront distribution for the ${var.aws_region} frontend deployment"
   default_root_object = "index.html"
   aliases = [local.domain]
   default_cache_behavior {

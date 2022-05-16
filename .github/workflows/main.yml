@@ -26,7 +26,7 @@ jobs:
       #   run: yarn test 
       #   working-directory: ./frontend    
       # # Build the React app
-      - name: Create static build
+      - name: Create React Application
         run: yarn build && pwd && ls -altr 
         working-directory: ./frontend
       # Upload the artifact for other stages to use

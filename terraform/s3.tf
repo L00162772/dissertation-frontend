@@ -21,6 +21,7 @@ resource "aws_s3_bucket" "frontend_s3_bucket" {
     index_document = "index.html"
     error_document = "index.html"
   }
+  force_destroy = true
 }
 resource "aws_s3_bucket_public_access_block" "frontend_s3_access_control" {
   bucket             = aws_s3_bucket.frontend_s3_bucket.id
