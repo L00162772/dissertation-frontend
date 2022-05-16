@@ -37,7 +37,7 @@ jobs:
   terraform-setup:
     name: "Perform Terraform Setup"
     runs-on: ubuntu-latest
-    needs: build-application
+    needs: build
     defaults:
       run:
         shell: bash
