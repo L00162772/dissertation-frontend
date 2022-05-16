@@ -150,7 +150,7 @@ jobs:
              pwd
              ls -latr
              aws s3 sync . s3://${{ secrets.S3_BUCKET_NAME }} --delete
-        working-directory: frontend/build
+      #  working-directory: frontend/build
       # Invalidate index file in Cloudfront (this forces edges to fetch the latest index.html)
       - name: invalidate
         uses: chetan/invalidate-cloudfront-action@master
