@@ -8,10 +8,10 @@ jobs:
     steps:
       # Clone the repo
       - name: Clone repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
       # Cache node modules
       - name: Cache node modules
-        uses: actions/cache@v1   
+        uses: actions/cache@v3  
         with:
           path: ./frontend/node_modules
           key: yarn-deps-${{ hashFiles('yarn.lock') }}
@@ -44,10 +44,10 @@ jobs:
         working-directory: ./terraform
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
+        uses: hashicorp/setup-terraform@v2
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
@@ -69,7 +69,7 @@ jobs:
         run: terraform plan -no-color
         continue-on-error: true
 
-      - uses: actions/github-script@0.9.0
+      - uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
         env:
           PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
@@ -108,10 +108,10 @@ jobs:
       name: dissertation-frontend
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
+        uses: hashicorp/setup-terraform@v2
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
           terraform_wrapper: false
@@ -122,7 +122,7 @@ jobs:
 
       - name: Terraform Apply
         #if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -auto-approve
+        run: terraform apply -auto-approve -var="region=$AWS_REGION"
 
       #- name: Get Elastic Beanstalk Endpoint
       #  run: |
@@ -134,7 +134,7 @@ jobs:
     steps:
       # Download the build artifact
       - name: Get build artifact
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v3
         with:
           name: build
       # Setup the AWS credentials
@@ -171,10 +171,10 @@ jobs:
       name: dissertation-frontend
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
+        uses: hashicorp/setup-terraform@v2
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 

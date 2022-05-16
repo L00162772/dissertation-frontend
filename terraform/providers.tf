@@ -23,6 +23,12 @@ data "aws_caller_identity" "current" {}
 provider "aws" {
   region = var.aws_region
   #profile = "lyit"
+  default_tags {
+    tags = {
+      Environment = var.aws_region
+      Name        = "frontend"
+    }
+  }
 }
 provider "aws" {
   region = "us-east-1"
