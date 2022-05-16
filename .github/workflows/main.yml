@@ -104,8 +104,8 @@ jobs:
       run:
         shell: bash
         working-directory: ./terraform
-    environment:
-      name: dissertation-frontend
+    #environment:
+    #  name: dissertation-frontend
     steps:
       - name: Checkout
         uses: actions/checkout@v3
