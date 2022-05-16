@@ -1,5 +1,5 @@
 data "aws_route53_zone" "frontend_route53" {
-  name         = "${var.route53_domain}"
+  name         = var.route53_domain
   private_zone = false
 }
 
@@ -30,5 +30,5 @@ resource "aws_route53_record" "frontend" {
   ttl     = "5"
 
 
-  records        = [aws_cloudfront_distribution.frontend_cloudfront_distribution.domain_name]
+  records = [aws_cloudfront_distribution.frontend_cloudfront_distribution.domain_name]
 }

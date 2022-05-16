@@ -9,6 +9,6 @@ variable "bucket_name_postfix" {
 }
 
 variable "route53_domain" {
-    default = "atu-dissertation.com"
-    description = "Domain to deploy the application at"
+  default     = "atu-dissertation.com"
+  description = "Domain to deploy the application at"
 }
