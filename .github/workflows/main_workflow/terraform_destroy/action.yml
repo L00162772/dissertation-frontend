@@ -1,0 +1,29 @@
+name: Terraform Destroy
+on:
+  workflow_call:
+    inputs:
+      aws_region:
+        required: true
+        type: string
+
+
+runs:
+  using: "composite"
+  steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Replace AWS Region
+        run:  sed -i 's/###AWS_REGION###/${{ env.AWS_REGION }}/g' variables.tf
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve          

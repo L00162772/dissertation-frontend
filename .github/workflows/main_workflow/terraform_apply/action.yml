@@ -1,0 +1,36 @@
+name: Terraform Apply
+on:
+  workflow_call:
+    inputs:
+      aws_region:
+        required: true
+        type: string
+
+
+runs:
+  using: "composite"
+  steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Replace AWS Region
+        run:  sed -i 's/###AWS_REGION###/${{ inputs.aws_region }}/g' variables.tf
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+          terraform_wrapper: false
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform Apply
+        #if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve              
+
+      - name: Get Cloudfront Distribution Id
+        run: |
+           cloudfront_distribution_id=$(terraform output cloudfront_distribution_id)
+           echo $cloudfront_distribution_id
