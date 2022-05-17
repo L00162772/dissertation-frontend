@@ -26,7 +26,7 @@ provider "aws" {
   default_tags {
     tags = {
       Region = var.aws_region
-      Name        = "frontend"
+      Name   = "frontend"
     }
   }
 }
