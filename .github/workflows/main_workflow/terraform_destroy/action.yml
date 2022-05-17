@@ -16,7 +16,7 @@ runs:
         uses: actions/checkout@v3
 
       - name: Replace AWS Region
-        run:  sed -i 's/###AWS_REGION###/${{ env.AWS_REGION }}/g' variables.tf
+        run:  sed -i 's/###AWS_REGION###/${{ env.AWS_REGION }}/g' terraform/variables.tf
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2

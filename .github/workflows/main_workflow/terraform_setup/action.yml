@@ -22,7 +22,7 @@ runs:
         shell: bash
 
       - name: Replace AWS Region
-        run:  sed -i 's/###AWS_REGION###/${{ env.AWS_REGION }}/g' variables.tf
+        run:  sed -i 's/###AWS_REGION###/${{ inputs.aws_region }}/g' terraform/variables.tf
         shell: bash
 
       - name: Setup Terraform
