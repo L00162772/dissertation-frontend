@@ -22,6 +22,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Replace AWS Region
+        run:  sed -i 's/###AWS_REGION###/${{ env.AWS_REGION }}/g' variables.tf
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
@@ -88,6 +91,7 @@ jobs:
       
       - name: Replace AWS Region
         run:  sed -i 's/###AWS_REGION###/${{ inputs.aws_region }}/g' variables.tf
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
@@ -157,6 +161,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Replace AWS Region
+        run:  sed -i 's/###AWS_REGION###/${{ env.AWS_REGION }}/g' variables.tf
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
