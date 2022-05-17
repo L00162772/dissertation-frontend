@@ -5,8 +5,12 @@ on:
       aws_region:
         required: true
         type: string
-
-
+      TF_API_TOKEN:
+        required: true
+        type: string
+      GITHUB_TOKEN:
+        required: true
+        type: string        
 runs:
   using: "composite"
   steps:
@@ -24,7 +28,7 @@ runs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+          cli_config_credentials_token: ${{ input.TF_API_TOKEN }}
 
       - name: Terraform Format
         id: fmt
@@ -53,7 +57,7 @@ runs:
         env:
           PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ input.GITHUB_TOKEN }}
           script: |
             const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
             #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
@@ -71,7 +75,6 @@ runs:
               repo: context.repo.repo,
               body: output
             })
-        shell: bash
 
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'

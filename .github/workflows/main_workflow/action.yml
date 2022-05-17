@@ -5,14 +5,26 @@ on:
       aws_region:
         required: true
         type: string
-
-
+      TF_API_TOKEN:
+        required: true
+        type: string
+      GITHUB_TOKEN:
+        required: true
+        type: string  
+      AWS_ACCESS_KEY_ID:
+        required: true
+        type: string  
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+        type: string          
 runs:
   using: composite
   steps:
     - uses: ./.github/workflows/main_workflow/terraform_setup
       with:
         aws_region: ${{ matrix.aws_region }}
+        TF_API_TOKEN: ${{ input.TF_API_TOKEN }}
+        GITHUB_TOKEN: ${{ input.GITHUB_TOKEN }}
 
     - uses: ./.github/workflows/main_workflow/terraform_apply
       with:
@@ -21,7 +33,10 @@ runs:
     - uses: ./.github/workflows/main_workflow/deploy_application
       with:
         aws_region: ${{ matrix.aws_region }}
-
+        AWS_ACCESS_KEY_ID: ${{ input.AWS_ACCESS_KEY_ID }}  
+        AWS_SECRET_ACCESS_KEY: ${{ input.AWS_SECRET_ACCESS_KEY }}  
+        
     - uses: ./.github/workflows/main_workflow/terraform_destroy
       with:
-        aws_region: ${{ matrix.aws_region }}      
+        aws_region: ${{ matrix.aws_region }}    
+        TF_API_TOKEN: ${{ input.TF_API_TOKEN }}  

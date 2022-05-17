@@ -12,9 +12,10 @@ runs:
   steps:
       - name: Checkout
         uses: actions/checkout@v3
-      
+
       - name: Replace AWS Region
         run:  sed -i 's/###AWS_REGION###/${{ inputs.aws_region }}/g' variables.tf
+        shell: bash
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
@@ -25,12 +26,15 @@ runs:
       - name: Terraform Init
         id: init
         run: terraform init
+        shell: bash
 
       - name: Terraform Apply
         #if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -auto-approve              
+        run: terraform apply -auto-approve    
+        shell: bash          
 
       - name: Get Cloudfront Distribution Id
         run: |
            cloudfront_distribution_id=$(terraform output cloudfront_distribution_id)
            echo $cloudfront_distribution_id
+        shell: bash

@@ -5,7 +5,9 @@ on:
       aws_region:
         required: true
         type: string
-
+      TF_API_TOKEN:
+        required: true
+        type: string
 
 runs:
   using: "composite"
@@ -19,7 +21,7 @@ runs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+          cli_config_credentials_token: ${{ input.TF_API_TOKEN }}
 
       - name: Terraform Init
         id: init
