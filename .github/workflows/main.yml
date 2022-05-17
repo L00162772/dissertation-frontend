@@ -154,6 +154,8 @@ jobs:
              ls -latr
              aws s3 sync . s3://${{ env.AWS_REGION }}-${{ env.BUCKET_NAME_POSTFIX }} --delete
       #  working-directory: frontend/build
+      - name: Get Cloudfront Distribution Id   
+        run: scripts/invalidate_cloudfront_distribution.py
       # Invalidate index file in Cloudfront (this forces edges to fetch the latest index.html)
       - name: invalidate
         uses: chetan/invalidate-cloudfront-action@master

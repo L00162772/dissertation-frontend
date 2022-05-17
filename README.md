@@ -2,7 +2,7 @@
 Frontend Repository for the Dissertation
 See: https://andyjones.co/articles/react-aws-terraform-github-actions/
 See: https://stackoverflow.com/questions/65242830/in-a-github-actions-workflow-is-there-a-way-to-have-multiple-jobs-reuse-the-sam
-
+See: https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs#about-matrix-strategies
 ## Folder Structure
 terraform: Infrastructure as Code (IaC)
 frontend: React frontend code
