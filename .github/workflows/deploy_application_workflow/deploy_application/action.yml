@@ -17,6 +17,7 @@ runs:
   steps:
       - name: test
         run: pwd && ls -latr
+        shell: bash
 
     # Download the build artifact
       - name: Get build artifact
@@ -37,9 +38,12 @@ runs:
              pwd
              ls -latr
              aws s3 sync . s3://${{ inputs.aws_region }}-l00162772-frontend --delete
+        shell: bash
+
       #  working-directory: frontend/build
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Setup Python
         uses: actions/setup-python@v3
         with:
@@ -47,7 +51,10 @@ runs:
           architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
       - name: Install Python Dependencies
         run: |
-          pip install boto3  
+          pip install boto3 
+        shell: bash
+
       - name: Invalidate Cloudfront Distribution  
         run: CHOOSEN_AWS_REGION=${{ inputs.aws_region }} AWS_ACCESS_KEY_ID=${{ inputs.AWS_ACCESS_KEY_ID }} AWS_SECRET_ACCESS_KEY=${{ inputs.AWS_SECRET_ACCESS_KEY }} python3 scripts/invalidate_cloudfront_distribution.py
+        shell: bash
   
