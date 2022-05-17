@@ -9,18 +9,19 @@ on:
 
 runs:
   using: composite
-  - uses: ./.github/workflows/main_workflow/terraform_setup
-    with:
-      aws_region: ${{ matrix.aws_region }}
+  steps:
+    - uses: ./.github/workflows/main_workflow/terraform_setup
+      with:
+        aws_region: ${{ matrix.aws_region }}
 
-  - uses: ./.github/workflows/main_workflow/terraform_apply
-    with:
-      aws_region: ${{ matrix.aws_region }}      
+    - uses: ./.github/workflows/main_workflow/terraform_apply
+      with:
+        aws_region: ${{ matrix.aws_region }}      
 
-  - uses: ./.github/workflows/main_workflow/deploy_application
-    with:
-      aws_region: ${{ matrix.aws_region }}
+    - uses: ./.github/workflows/main_workflow/deploy_application
+      with:
+        aws_region: ${{ matrix.aws_region }}
 
-  - uses: ./.github/workflows/main_workflow/terraform_destroy
-    with:
-      aws_region: ${{ matrix.aws_region }}      
+    - uses: ./.github/workflows/main_workflow/terraform_destroy
+      with:
+        aws_region: ${{ matrix.aws_region }}      
