@@ -1,9 +1,16 @@
 name: Deploy Production
 on: [push]
 env:
-  AWS_REGION: us-east-1
   BUCKET_NAME_POSTFIX: l00162772-frontend
 jobs:
+  define-matrix:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        aws_region: ['us-east-1', 'us-east-2']
+    steps:
+      - name: Setup Matrix
+        run: echo "Setting up Matrix"
   build:
     runs-on: ubuntu-latest
     steps:
@@ -46,6 +53,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Replace AWS Region
+        run:  sed -i 's/###AWS_REGION###/${{ matrix.aws_region }}/g' variables.tf
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
@@ -99,7 +109,9 @@ jobs:
   terraform-apply:
     name: "Perform Terraform Apply"
     runs-on: ubuntu-latest
-    needs: terraform-setup
+    needs: [terraform-setup, define-matrix]
+    strategy:
+      matrix: ${{ fromJSON(needs.define-matrix.outputs.aws_region) }}
     timeout-minutes: 60
     defaults:
       run:
@@ -112,7 +124,8 @@ jobs:
         uses: actions/checkout@v3
       
       - name: Replace AWS Region
-        run:  sed -i 's/###AWS_REGION###/${{ env.AWS_REGION }}/g' variables.tf
+        run:  sed -i 's/###AWS_REGION###/${{ matrix.aws_region }}/g' variables.tf
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
@@ -124,7 +137,6 @@ jobs:
         run: terraform init
 
       - name: Terraform Apply
-        #if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve              
 
       #- name: Get Elastic Beanstalk Endpoint
@@ -133,7 +145,9 @@ jobs:
       #     echo $elasticbeanstalk_app_cname
   deploy:
     runs-on: ubuntu-latest
-    needs: terraform-apply
+    needs: [terraform-apply, define-matrix]
+    strategy:
+      matrix: ${{ fromJSON(needs.define-matrix.outputs.aws_region) }}
     steps:
       # Download the build artifact
       - name: Get build artifact
@@ -146,13 +160,13 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws_region: ${{ matrix.aws_region }}
       # Copy the files from /build to s3 bucket
       - name: Deploy static site to S3 bucket
         run: |
              pwd
              ls -latr
-             aws s3 sync . s3://${{ env.AWS_REGION }}-${{ env.BUCKET_NAME_POSTFIX }} --delete
+             aws s3 sync . s3://${{ matrix.aws_region }}-${{ env.BUCKET_NAME_POSTFIX }} --delete
       #  working-directory: frontend/build
       - name: Checkout
         uses: actions/checkout@v3
@@ -165,16 +179,16 @@ jobs:
         run: |
           pip install boto3 
       - name: Execute CloudFront Invalidation
-        run: INPUT_STORE='abcd' python3 scripts/test.py     
+        run: INPUT_STORE='abcd'' python3 scripts/test.py     
       - name: Get Cloudfront Distribution Id   
-        run: AWS_REGION=${{ AWS_REGION }} AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} python3 scripts/invalidate_cloudfront_distribution.py
+        run: scripts/invalidate_cloudfront_distribution.py
       # Invalidate index file in Cloudfront (this forces edges to fetch the latest index.html)
       - name: invalidate
         uses: chetan/invalidate-cloudfront-action@master
         env:
           DISTRIBUTION: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
           PATHS: '/index.html'
-          AWS_REGION: ${{ AWS_REGION }}
+          AWS_REGION: ${{ matrix.aws_region }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           
@@ -193,6 +207,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Replace AWS Region
+        run:  sed -i 's/###AWS_REGION###/${{ matrix.aws_region }}/g' variables.tf
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
