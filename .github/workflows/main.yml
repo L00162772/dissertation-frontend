@@ -164,18 +164,9 @@ jobs:
       - name: Install Python Dependencies
         run: |
           pip install boto3  
-      - name: Get Cloudfront Distribution Id   
+      - name: Invalidate Cloudfront Distribution  
         run: CHOOSEN_AWS_REGION=${{ env.AWS_REGION }} AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} python3 scripts/invalidate_cloudfront_distribution.py
-      # Invalidate index file in Cloudfront (this forces edges to fetch the latest index.html)
-      - name: invalidate
-        uses: chetan/invalidate-cloudfront-action@master
-        env: 
-          DISTRIBUTION: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
-          PATHS: '/index.html'
-          AWS_REGION: ${{ env.AWS_REGION }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          
+ 
   terraform-destroy:
     name: "Perform Terraform Destroy"
     if: always()
