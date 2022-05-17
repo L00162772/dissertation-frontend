@@ -31,11 +31,15 @@ runs:
           aws-access-key-id: ${{ inputs.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ inputs.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ inputs.aws_region }}
+
       # Copy the files from /build to s3 bucket
       - name: Deploy static site to S3 bucket
         run: |
              pwd
              ls -altr
+             cd frontend
+             pwd
+             ls -latr
              cd frontend/build
              pwd
              ls -latr
