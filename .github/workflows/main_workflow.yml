@@ -39,7 +39,7 @@ jobs:
       matrix:
         aws_region: ["us-east-1", us-east-2]
     steps:
-      - uses: ./.github/workflows/deployment_workflow.yml
+      - uses: actions/dissertation-frontend@v1
         with:
           aws_region: ${{ matrix.aws_region }}
     
