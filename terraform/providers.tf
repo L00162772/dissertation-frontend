@@ -25,7 +25,7 @@ provider "aws" {
   #profile = "lyit"
   default_tags {
     tags = {
-      Environment = var.aws_region
+      Region = var.aws_region
       Name        = "frontend"
     }
   }

@@ -163,9 +163,7 @@ jobs:
           architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
       - name: Install Python Dependencies
         run: |
-          pip install boto3 
-      - name: Execute CloudFront Invalidation
-        run: INPUT_STORE='abcd' python3 scripts/test.py     
+          pip install boto3  
       - name: Get Cloudfront Distribution Id   
         run: CHOOSEN_AWS_REGION=${{ env.AWS_REGION }} AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} python3 scripts/invalidate_cloudfront_distribution.py
       # Invalidate index file in Cloudfront (this forces edges to fetch the latest index.html)
