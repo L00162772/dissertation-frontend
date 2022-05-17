@@ -39,7 +39,7 @@ jobs:
       matrix:
         aws_region: ["us-east-1", us-east-2]
     steps:
-      uses: ./.github/workflows/deployment_workflow.yml
-      with:
-        aws_region: ${{ matrix.aws_region }}
+      - uses: ./.github/workflows/deployment_workflow.yml
+        with:
+          aws_region: ${{ matrix.aws_region }}
     
