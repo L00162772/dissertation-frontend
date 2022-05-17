@@ -15,9 +15,11 @@ runs:
 
       - name: test
         run: pwd && ls -latr
+        shell: bash
 
       - name: Replace AWS Region
         run:  sed -i 's/###AWS_REGION###/${{ env.AWS_REGION }}/g' variables.tf
+        shell: bash
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
@@ -27,20 +29,24 @@ runs:
       - name: Terraform Format
         id: fmt
         run: terraform fmt -recursive -check
+        shell: bash
 
       - name: Terraform Init
         id: init
         run: terraform init
+        shell: bash
 
       - name: Terraform Validate
         id: validate
         run: terraform validate -no-color
+        shell: bash
 
       - name: Terraform Plan
         id: plan
         if: github.event_name == 'pull_request'
         run: terraform plan -no-color
         continue-on-error: true
+        shell: bash
 
       - uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
@@ -65,7 +71,10 @@ runs:
               repo: context.repo.repo,
               body: output
             })
+        shell: bash
+
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
+        shell: bash
   
