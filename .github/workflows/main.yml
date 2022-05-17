@@ -165,7 +165,7 @@ jobs:
         run: |
           pip install boto3 
       - name: Execute CloudFront Invalidation
-        run: INPUT_STORE='abcd'' python3 scripts/test.py     
+        run: INPUT_STORE='abcd' python3 scripts/test.py     
       - name: Get Cloudfront Distribution Id   
         run: scripts/invalidate_cloudfront_distribution.py
       # Invalidate index file in Cloudfront (this forces edges to fetch the latest index.html)
