@@ -4,6 +4,8 @@ jobs:
 
   call_destroy_application_workflow:
     runs-on: ubuntu-latest
+    environment:
+      name: dissertation-frontend
     strategy:
       max-parallel: 1
       matrix:
