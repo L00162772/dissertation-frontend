@@ -17,6 +17,7 @@ runs:
 
       - name: Replace AWS Region
         run:  cd terraform && sed -i 's/###AWS_REGION###/${{ env.AWS_REGION }}/g' variables.tf
+        shell: bash
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
@@ -26,6 +27,8 @@ runs:
       - name: Terraform Init
         id: init
         run: cd terraform && terraform init
+        shell: bash
 
       - name: Terraform Destroy
-        run: cd terraform && terraform destroy -auto-approve          
+        run: cd terraform && terraform destroy -auto-approve  
+        shell: bash        
