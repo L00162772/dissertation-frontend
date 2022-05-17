@@ -17,20 +17,8 @@ runs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: test
-        run: pwd && ls -latr
-        shell: bash
-
-      - name: correct dir
-        run: cd terraform
-        shell: bash
-
-      - name: test2
-        run: pwd && ls -latr
-        shell: bash
-
       - name: Replace AWS Region
-        run:  sed -i 's/###AWS_REGION###/${{ inputs.aws_region }}/g' terraform/variables.tf
+        run:  cd terraform && sed -i 's/###AWS_REGION###/${{ inputs.aws_region }}/g' variables.tf
         shell: bash
 
       - name: Setup Terraform
@@ -40,23 +28,23 @@ runs:
 
       - name: Terraform Format
         id: fmt
-        run: terraform fmt -recursive -check
+        run: cd terraform && terraform fmt -recursive -check
         shell: bash
 
       - name: Terraform Init
         id: init
-        run: terraform init
+        run: cd terraform && terraform init
         shell: bash
 
       - name: Terraform Validate
         id: validate
-        run: terraform validate -no-color
+        run: cd terraform && terraform validate -no-color
         shell: bash
 
       - name: Terraform Plan
         id: plan
         if: github.event_name == 'pull_request'
-        run: terraform plan -no-color
+        run: cd terraform && terraform plan -no-color
         continue-on-error: true
         shell: bash
 
@@ -67,6 +55,7 @@ runs:
         with:
           github-token: ${{ inputs.GITHUB_TOKEN }}
           script: |
+            cd terraform &&
             const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
             #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
             #### Terraform Validation 🤖\`${{ steps.validate.outputs.stdout }}\`
@@ -86,6 +75,6 @@ runs:
 
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
-        run: exit 1
+        run: cd terraform && exit 1
         shell: bash
   

@@ -33,6 +33,7 @@ runs:
       # Copy the files from /build to s3 bucket
       - name: Deploy static site to S3 bucket
         run: |
+             cd frontend/build
              pwd
              ls -latr
              aws s3 sync . s3://${{ inputs.aws_region }}-l00162772-frontend --delete
