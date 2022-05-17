@@ -1,7 +1,7 @@
 import os
 import boto3
 
-aws_region = os.environ['AWS_REGION']
+aws_region = os.environ['CHOOSEN_AWS_REGION']
 aws_access_key_id = os.environ['AWS_ACCESS_KEY_ID']
 aws_secret_access_key = os.environ['AWS_SECRET_ACCESS_KEY']
 
