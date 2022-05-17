@@ -51,7 +51,7 @@ jobs:
       - name: test
         run: pwd && ls -latr
 
-      - uses: ./main_workflow
+      - uses: ./.github/workflows/main_workflow
         with:
           aws_region: ${{ matrix.aws_region }}
     
