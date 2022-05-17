@@ -1,4 +1,4 @@
-name: Main Trigger Workflow
+name: Deploy Application Workflow
 on: [push]
 jobs:
   build:
@@ -51,7 +51,7 @@ jobs:
       - name: test
         run: pwd && ls -latr
 
-      - uses: ./.github/workflows/main_workflow
+      - uses: ./.github/workflows/deploy_application_workflow
         with:
           aws_region: ${{ matrix.aws_region }}
           TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
