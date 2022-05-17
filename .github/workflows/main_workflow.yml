@@ -32,21 +32,14 @@ jobs:
         with:
           name: build
           path: frontend/build     
-  setup_matrix:
+  call_deployment_workflow:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 1
       matrix:
         aws_region: ["us-east-1", us-east-2]
     steps:
-      - name: Setting up Matrix
-        run: echo "Setting up Matrix"
-  call_deployment_workflow:
-    needs: setup_matrix
-    strategy:
-      max-parallel: 1
-      matrix: ${{ fromJSON(needs.setup_matrix.outputs.aws_region) }}
-    uses: ./.github/workflows/deployment_workflow.yml
-    with:
-      aws_region: ${{ matrix.aws_region }}
+      uses: ./.github/workflows/deployment_workflow.yml
+      with:
+        aws_region: ${{ matrix.aws_region }}
     
