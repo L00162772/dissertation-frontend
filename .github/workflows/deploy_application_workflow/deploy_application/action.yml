@@ -15,7 +15,7 @@ on:
 runs:
   using: "composite"
   steps:
-      - name: test
+      - name: Pre Download
         run: pwd && ls -latr
         shell: bash
 
@@ -24,6 +24,11 @@ runs:
         uses: actions/download-artifact@v3
         with:
           name: build
+
+      - name: Post Download
+        run: pwd && ls -latr
+        shell: bash
+
       # Setup the AWS credentials
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
