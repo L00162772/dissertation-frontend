@@ -71,6 +71,6 @@ jobs:
       max-parallel: 1
       matrix: ${{ fromJSON(needs.setup_matrix.outputs.aws_region) }}
     uses: ./.github/workflows/deployment_workflow.yml
-     with:
+    with:
       aws_region: ${{ matrix.aws_region }}
     
