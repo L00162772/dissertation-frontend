@@ -21,6 +21,14 @@ runs:
         run: pwd && ls -latr
         shell: bash
 
+      - name: correct dir
+        run: cd terraform
+        shell: bash
+
+      - name: test2
+        run: pwd && ls -latr
+        shell: bash
+
       - name: Replace AWS Region
         run:  sed -i 's/###AWS_REGION###/${{ inputs.aws_region }}/g' terraform/variables.tf
         shell: bash
