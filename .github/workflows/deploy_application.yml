@@ -39,7 +39,7 @@ jobs:
 
   call_deployment_workflow:
     runs-on: ubuntu-latest
-    #needs: build
+    needs: build
     strategy:
       max-parallel: 1
       matrix:
