@@ -28,7 +28,7 @@ runs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          cli_config_credentials_token: ${{ input.TF_API_TOKEN }}
+          cli_config_credentials_token: ${{ inputs.TF_API_TOKEN }}
 
       - name: Terraform Format
         id: fmt
@@ -57,7 +57,7 @@ runs:
         env:
           PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
         with:
-          github-token: ${{ input.GITHUB_TOKEN }}
+          github-token: ${{ inputs.GITHUB_TOKEN }}
           script: |
             const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
             #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
