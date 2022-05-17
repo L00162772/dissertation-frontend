@@ -34,12 +34,13 @@ jobs:
           path: frontend/build     
   call_deployment_workflow:
     runs-on: ubuntu-latest
+    needs: build
     strategy:
       max-parallel: 1
       matrix:
         aws_region: ["us-east-1", us-east-2]
     steps:
-      - uses: actions/dissertation-frontend@v1
+      - uses: actions/L00162772/dissertation-frontend@v1
         with:
           aws_region: ${{ matrix.aws_region }}
     
