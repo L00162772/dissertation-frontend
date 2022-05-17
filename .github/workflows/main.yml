@@ -152,7 +152,7 @@ jobs:
         run: |
              pwd
              ls -latr
-             aws s3 sync . s3://${{ AWS_REGION }}-${{ BUCKET_NAME_POSTFIX }} --delete
+             aws s3 sync . s3://${{ env.AWS_REGION }}-${{ env.BUCKET_NAME_POSTFIX }} --delete
       #  working-directory: frontend/build
       # Invalidate index file in Cloudfront (this forces edges to fetch the latest index.html)
       - name: invalidate
