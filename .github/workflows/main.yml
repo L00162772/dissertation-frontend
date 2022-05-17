@@ -110,7 +110,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
+      
+      - name: Replace AWS Region
+        run:  sed -i 's/###AWS_REGION###/${{ env.AWS_REGION }}/g' variables.tf
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
@@ -123,9 +125,10 @@ jobs:
 
       - name: Terraform Apply
         #if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: |
-             export TF_VAR_aws_region=${{ env.AWS_REGION }}
-             terraform apply -auto-approve 
+        #run: |
+        #     export TF_VAR_aws_region=${{ env.AWS_REGION }}
+        #     terraform apply -auto-approve ]
+        run: terraform apply -auto-approve              
 
       #- name: Get Elastic Beanstalk Endpoint
       #  run: |
@@ -161,7 +164,10 @@ jobs:
         with:
           python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
           architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
-      - name: Execute Invalidation
+      - name: Install Python Dependencies
+        run: |
+          pip install boto3 
+      - name: Execute CloudFront Invalidation
         run: INPUT_STORE='abcd'' python3 scripts/test.py     
       - name: Get Cloudfront Distribution Id   
         run: scripts/invalidate_cloudfront_distribution.py

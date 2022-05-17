@@ -1,6 +1,6 @@
 variable "aws_region" {
   type    = string
-  default = "us-east-2"
+  default = "###AWS_REGION###"
 }
 
 variable "bucket_name_postfix" {
