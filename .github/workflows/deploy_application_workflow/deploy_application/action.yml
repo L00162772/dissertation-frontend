@@ -16,7 +16,7 @@ runs:
   using: "composite"
   steps:
       - name: Pre Download
-        run: pwd && ls -latr
+        run: cd frontend && mkdir build && cd build && pwd && ls -latr
         shell: bash
 
     # Download the build artifact
