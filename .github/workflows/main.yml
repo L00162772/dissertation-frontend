@@ -8,6 +8,9 @@ jobs:
     strategy:
       matrix:
         aws_region: ['us-east-1', 'us-east-2']
+    steps:
+      - name: Setup Matrix
+        run: echo "Setting up Matrix"
   build:
     runs-on: ubuntu-latest
     steps:
