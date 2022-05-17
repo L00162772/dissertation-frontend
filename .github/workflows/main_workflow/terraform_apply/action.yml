@@ -20,7 +20,7 @@ runs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          cli_config_credentials_token: ${{ inputs..TF_API_TOKEN }}
+          cli_config_credentials_token: ${{ inputs.TF_API_TOKEN }}
           terraform_wrapper: false
 
       - name: Terraform Init
