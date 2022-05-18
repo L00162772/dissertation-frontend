@@ -50,7 +50,7 @@ jobs:
 
       - name: test
         run: pwd && ls -latr
-
+ 
       - uses: ./.github/workflows/deploy_application_workflow
         with:
           aws_region: ${{ matrix.aws_region }}
