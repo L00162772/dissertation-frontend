@@ -47,7 +47,7 @@ resource "aws_lb_listener" "app" {
     type = "redirect"
 
     redirect {
-      host        =  local.cloudfront_domain
+      host        = local.cloudfront_domain
       status_code = "HTTP_301"
     }
   }
