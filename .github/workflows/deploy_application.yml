@@ -37,9 +37,18 @@ jobs:
           name: build
           path: frontend/build   
 
-  call_deployment_workflow:
+  should_deploy_frontend:
     runs-on: ubuntu-latest
     needs: build
+    environment:
+      name: dissertation-frontend
+    steps:
+      - name: Should deploy frontend?
+        run: echo "Should deploy frontend?"
+
+  call_deployment_workflow:
+    runs-on: ubuntu-latest
+    needs: should_deploy_frontend
     strategy:
       max-parallel: 1
       matrix:

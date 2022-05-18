@@ -2,10 +2,17 @@ name: Destroy Application Workflow
 on: [push]
 jobs:
 
-  call_destroy_application_workflow:
+  should_destroy_frontend:
     runs-on: ubuntu-latest
     environment:
       name: dissertation-frontend
+    steps:
+      - name: Should destroy frontend?
+        run: echo "Should destroy frontend?"
+
+  call_destroy_application_workflow:
+    runs-on: ubuntu-latest
+    needs: should_destroy_frontend
     strategy:
       max-parallel: 1
       matrix:
