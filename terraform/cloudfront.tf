@@ -4,7 +4,7 @@ resource "aws_cloudfront_distribution" "frontend_cloudfront_distribution" {
   is_ipv6_enabled     = true
   comment             = "The cloudfront distribution for the ${var.aws_region} frontend deployment"
   default_root_object = "index.html"
-  aliases             = [local.domain]
+  aliases             = [local.cloudfront_domain]
   default_cache_behavior {
     allowed_methods        = ["GET", "HEAD"]
     cached_methods         = ["GET", "HEAD"]
