@@ -43,9 +43,6 @@ runs:
         run: |
              pwd
              ls -altr
-             cd frontend
-             pwd
-             ls -latr
              cd frontend/build
              pwd
              ls -latr
