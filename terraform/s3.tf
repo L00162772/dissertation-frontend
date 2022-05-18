@@ -14,8 +14,8 @@ data "aws_iam_policy_document" "s3-website-policy" {
 }
 
 resource "aws_s3_bucket" "frontend_s3_bucket" {
-  bucket = "${var.aws_region}-${var.bucket_name_postfix}"
-  acl = "public-read"
+  bucket        = "${var.aws_region}-${var.bucket_name_postfix}"
+  acl           = "public-read"
   force_destroy = true
 }
 
