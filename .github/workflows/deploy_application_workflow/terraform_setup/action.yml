@@ -21,7 +21,7 @@ runs:
         run: |
             cd terraform 
             sed -i 's/###AWS_REGION###/${{ inputs.aws_region }}/g' variables.tf
-            sed -i 's/###TERRAFORM_CLOUD_WORKSPACE###/frontend-${{ inputs.aws_region }}/g' variables.tf
+            sed -i 's/###TERRAFORM_CLOUD_WORKSPACE###/frontend-${{ inputs.aws_region }}/g' providers.tf
         shell: bash
 
       - name: Setup Terraform

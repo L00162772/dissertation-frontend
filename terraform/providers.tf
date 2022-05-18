@@ -10,10 +10,10 @@ terraform {
   required_version = ">= 1.1.9"
 
   backend "remote" {
-    organization = var.terraform_cloud_organisation
+    organization = "dissertation"
 
     workspaces {
-      name = var.terraform_cloud_workspace
+      name = "###TERRAFORM_CLOUD_WORKSPACE###"
     }
   }
 }
