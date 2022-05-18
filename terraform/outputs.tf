@@ -11,5 +11,5 @@ output "cloudfront_distribution_id" {
 }
 
 output "alb_dns_name" {
-  value = aws_lb.app.dns_name
+  value = aws_lb.frontend_alb.dns_name
 }

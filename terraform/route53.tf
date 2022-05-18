@@ -42,4 +42,8 @@ resource "aws_route53_record" "alb_frontend" {
     zone_id                = aws_elb.frontend_alb.zone_id
     evaluate_target_health = true
   }
+
+  depends_on = [
+    aws_lb.frontend_alb
+  ]
 }
