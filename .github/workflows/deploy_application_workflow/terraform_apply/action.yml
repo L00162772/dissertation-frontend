@@ -19,7 +19,7 @@ runs:
         run: |
             sed -i 's/###AWS_REGION###/${{ inputs.aws_region }}/g' terraform/variables.tf
             sed -i 's/###TERRAFORM_CLOUD_WORKSPACE###/frontend-${{ inputs.aws_region }}/g' terraform/providers.tf
-            sed -i 's/###AWS_REGION###/${{ inputs.aws_region }}/g' frontend/public/index.html
+            sed -i 's/###AWS_REGION###/${{ inputs.aws_region }}/g' frontend/build/index.html
         shell: bash
 
       - name: Setup Terraform
