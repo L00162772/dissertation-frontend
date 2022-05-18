@@ -16,3 +16,5 @@ print(f"get_workspaces_url:{get_workspaces_url}")
 
 get_workspaces_response=requests.get("http://www.example.com/", headers={"Authorization": f"Bearer {tf_api_token}"})
 print(f"get_workspaces_response:{get_workspaces_response}")
+
+# CHOOSEN_AWS_REGION=us-east-1 TF_API_TOKEN=7B1IyXaHshr7Kg.atlasv1.weHEIKHzHQUIVBHSDHrXr1ylqO2Ua4Qp8VyxNMNnd9nKpW53Ms3euN8yUNmBCi4GRE0 python3 scripts/setup_terraform_cloud.py
