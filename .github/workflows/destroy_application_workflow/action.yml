@@ -16,7 +16,7 @@ runs:
         uses: actions/checkout@v3
 
       - name: Replace AWS Region
-        run:  cd terraform && sed -i 's/###AWS_REGION###/${{ env.AWS_REGION }}/g' variables.tf
+        run:  cd terraform && sed -i 's/###AWS_REGION###/${{ inputs.AWS_REGION }}/g' variables.tf
         shell: bash
 
       - name: Setup Terraform
