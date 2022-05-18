@@ -39,9 +39,9 @@ jobs:
 
   should_deploy_frontend:
     runs-on: ubuntu-latest
-    #needs: build
-    environment:
-      name: dissertation-frontend
+    needs: build
+    #environment:
+    #  name: dissertation-frontend
     steps:
       - name: Should deploy frontend?
         run: echo "Should deploy frontend?"
