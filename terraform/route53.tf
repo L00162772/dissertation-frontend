@@ -38,8 +38,8 @@ resource "aws_route53_record" "alb_frontend" {
   type    = "A"
 
   alias {
-    name                   = aws_elb.frontend_alb.dns_name
-    zone_id                = aws_elb.frontend_alb.zone_id
+    name                   = aws_lb.frontend_alb.dns_name
+    zone_id                = aws_lb.frontend_alb.zone_id
     evaluate_target_health = true
   }
 
