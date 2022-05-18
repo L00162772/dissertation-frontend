@@ -55,12 +55,12 @@ resource "aws_route53_record" "frontend" {
   type    = "A"
 
   alias {
-    name                   = aws_globalaccelerator_listener.frontend_global_accelerator.dns_name
-    zone_id                = aws_globalaccelerator_listener.frontend_global_accelerator.zone_id
+    name                   = aws_globalaccelerator_listener.frontend_global_accelerator[0].dns_name
+    zone_id                = aws_globalaccelerator_listener.frontend_global_accelerator[0].zone_id
     evaluate_target_health = true
   }
 
   depends_on = [
-    aws_globalaccelerator_listener.frontend_global_accelerator
+    aws_globalaccelerator_listener.frontend_global_accelerator[0]
   ]
 }

@@ -8,7 +8,7 @@ resource "aws_globalaccelerator_accelerator" "frontend_global_accelerator" {
 
 resource "aws_globalaccelerator_listener" "frontend_global_accelerator_listener" {
   count           = var.aws_region == "us-east-1" ? 1 : 0
-  accelerator_arn = aws_globalaccelerator_accelerator.frontend_global_accelerator.id
+  accelerator_arn = aws_globalaccelerator_accelerator.frontend_global_accelerator[0].id
   client_affinity = "SOURCE_IP"
   protocol        = "TCP"
 
@@ -20,7 +20,7 @@ resource "aws_globalaccelerator_listener" "frontend_global_accelerator_listener"
 
 resource "aws_globalaccelerator_endpoint_group" "frontend_global_accelerator_endpoint_group" {
   count        = var.aws_region != "us-east-1" ? 1 : 0
-  listener_arn = aws_globalaccelerator_listener.frontend_global_accelerator_listener.id
+  listener_arn = aws_globalaccelerator_listener.frontend_global_accelerator_listener[0].id
 
   health_check_interval_seconds = 10
   health_check_path             = "/"
