@@ -28,8 +28,8 @@ resource "aws_s3_bucket_website_configuration" "frontend_s3_bucket" {
     suffix = "index.html"
   }
 
-  error_documindexent {
-    key = "error.html"
+  index_document {
+    key = "index.html"
   }
 }
 
