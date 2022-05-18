@@ -23,12 +23,23 @@ resource "aws_route53_record" "frontend_cloudfront_route53_validation_record" {
   ]
 }
 
-resource "aws_route53_record" "frontend" {
+resource "aws_route53_record" "cloudfront_frontend" {
   zone_id = data.aws_route53_zone.frontend_route53.zone_id
-  name    = "${var.aws_region}-frontend"
+  name    = "${var.aws_region}-cloudfront-frontend"
   type    = "CNAME"
   ttl     = "5"
 
-
   records = [aws_cloudfront_distribution.frontend_cloudfront_distribution.domain_name]
+}
+
+resource "aws_route53_record" "alb_frontend" {
+  zone_id = data.aws_route53_zone.frontend_route53.zone_id
+  name    = "${var.aws_region}-alb-frontend"
+  type    = "A"
+
+  alias {
+    name                   = aws_elb.frontend_alb.dns_name
+    zone_id                = aws_elb.frontend_alb.zone_id
+    evaluate_target_health = true
+  }
 }

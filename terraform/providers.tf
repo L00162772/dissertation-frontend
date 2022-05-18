@@ -36,6 +36,7 @@ provider "aws" {
   #profile = "lyit"
 }
 locals {
-  cloudfront_domain = "${var.aws_region}-frontend.${var.route53_domain}"
+  cloudfront_domain = "${var.aws_region}-cloudfront-frontend.${var.route53_domain}"
+  alb_domain = "${var.aws_region}-alb-frontend.${var.route53_domain}"
   s3_origin_id      = "${var.aws_region}-frontend-s3-origin"
 }

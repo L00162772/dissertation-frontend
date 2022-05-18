@@ -30,16 +30,16 @@ module "lb_security_group" {
 }
 
 
-resource "aws_lb" "app" {
-  name               = "main-app-lb"
+resource "aws_lb" "frontend_alb" {
+  name               = "main-frontend-lb"
   internal           = false
   load_balancer_type = "application"
   subnets            = module.vpc.public_subnets
   security_groups    = [module.lb_security_group.this_security_group_id]
 }
 
-resource "aws_lb_listener" "app" {
-  load_balancer_arn = aws_lb.app.arn
+resource "aws_lb_listener" "frontend_alb" {
+  load_balancer_arn = aws_lb.frontend_alb.arn
   port              = "80"
   protocol          = "HTTP"
 
