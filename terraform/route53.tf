@@ -60,6 +60,6 @@ resource "aws_route53_record" "frontend" {
   }
 
   depends_on = [
-    aws_globalaccelerator_listeneraws_lb.frontend_global_accelerator
+    aws_globalaccelerator_listener.frontend_global_accelerator
   ]
 }
