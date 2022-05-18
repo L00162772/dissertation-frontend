@@ -23,6 +23,7 @@ runs:
             sed -i 's/###TERRAFORM_CLOUD_WORKSPACE###/frontend-${{ inputs.aws_region }}/g' terraform/providers.tf
             pwd
             ls -latr
+            ls -latr frontend/
             sed -i 's/###AWS_REGION###/${{ inputs.aws_region }}/g' frontend/build/index.html
         shell: bash
 
