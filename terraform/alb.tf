@@ -38,10 +38,26 @@ resource "aws_lb" "frontend_alb" {
   security_groups    = [module.lb_security_group.this_security_group_id]
 }
 
-resource "aws_lb_listener" "frontend_alb" {
+resource "aws_lb_listener" "frontend_alb_http" {
   load_balancer_arn = aws_lb.frontend_alb.arn
   port              = "80"
   protocol          = "HTTP"
+
+  default_action {
+    type = "redirect"
+
+    redirect {
+      host        = local.cloudfront_domain
+      status_code = "HTTP_301"
+    }
+  }
+}
+
+resource "aws_lb_listener" "frontend_alb_https" {
+  load_balancer_arn = aws_lb.frontend_alb.arn
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
 
   default_action {
     type = "redirect"
