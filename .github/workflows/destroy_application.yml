@@ -21,10 +21,11 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v3
 
-      - name: test
+      - name: Output Current Directory
         run: pwd && ls -latr
 
-      - uses: ./.github/workflows/destroy_application_workflow
+      - name: Destroy the application workflow
+        uses: ./.github/workflows/destroy_application_workflow
         with:
           aws_region: ${{ matrix.aws_region }}
           TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }} 
