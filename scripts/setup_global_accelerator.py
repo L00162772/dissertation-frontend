@@ -63,6 +63,7 @@ for accelerator in list_accelerators_response['Accelerators']:
                         HostedZoneId=hosted_zone_id,
                         ChangeBatch={
                             'Changes': [
+                                {
                                     'Action': 'CREATE',
                                     'ResourceRecordSet': {
                                         'Name': 'frontend',
@@ -76,7 +77,7 @@ for accelerator in list_accelerators_response['Accelerators']:
                                             'EvaluateTargetHealth': True
                                         }
                                     }
-                                
+                                },
                             ]
                         }
                     )
