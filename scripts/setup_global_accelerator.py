@@ -5,6 +5,7 @@ aws_region = os.environ['CHOOSEN_AWS_REGION']
 aws_access_key_id = os.environ['AWS_ACCESS_KEY_ID']
 aws_secret_access_key = os.environ['AWS_SECRET_ACCESS_KEY']
 
+accelerator_region = "us-west-2"
 base_region = "us-east-1"
 base_dns = "atu-dissertation.com"
 
@@ -16,7 +17,7 @@ print("In setup global accelerator")
 client = boto3.client('globalaccelerator',
     aws_access_key_id=aws_access_key_id,
     aws_secret_access_key=aws_secret_access_key,
-    region_name=base_region)
+    region_name=accelerator_region)
 
 route53_client = boto3.client('route53',
     aws_access_key_id=aws_access_key_id,
