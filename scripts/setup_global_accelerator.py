@@ -68,10 +68,12 @@ if not has_frontend_tag:
 
     hosted_zones_response = route53_client.list_hosted_zones()
     print(f"hosted_zones_response: {hosted_zones_response}")
+    hosted_zone_id = ''
     for hosted_zone in hosted_zones_response['HostedZones']:
         print(f"hosted_zone: {hosted_zone}")
         if hosted_zone['Name'].lower() == base_dns:
             hosted_zone_id = hosted_zone['Id']
+            break
 
     print(f"hosted_zone_id :{hosted_zone_id}")
     change_resource_record_sets_response = route53_client.change_resource_record_sets(
