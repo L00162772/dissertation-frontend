@@ -15,7 +15,7 @@ module "lb_security_group" {
 
 
 resource "aws_lb" "frontend_alb" {
-  name               = "main-frontend-lb"
+  name               = "frontend-alb"
   internal           = false
   load_balancer_type = "application"
   subnets            = module.vpc.public_subnets
