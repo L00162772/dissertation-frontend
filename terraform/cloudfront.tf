@@ -37,6 +37,6 @@ resource "aws_cloudfront_distribution" "frontend_cloudfront_distribution" {
     response_code         = 200
   }
   depends_on = [
-    aws_acm_certificate_validation.validation
+    aws_acm_certificate_validation.cloudfront_cert_validation
   ]
 }
