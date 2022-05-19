@@ -102,8 +102,7 @@ if not has_frontend_tag:
             ]
         }
     )
-    print(
-        f"change_resource_record_sets_response: {create_accelerator_response}")
+    print(xf"change_resource_record_sets_response: {create_accelerator_response}")
 
 
 create_listener_response = client.create_listener(
