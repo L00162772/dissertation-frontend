@@ -66,7 +66,9 @@ if not has_frontend_tag:
         ]
     )
     print(f"create_accelerator_response: {create_accelerator_response}")
-
+    accelerator_arn = create_accelerator_response['Accelerator']['AcceleratorArn']
+    print(f"accelerator_arn: {accelerator_arn}")
+    
     hosted_zones_response = route53_client.list_hosted_zones()
     print(f"hosted_zones_response: {hosted_zones_response}")
     hosted_zone_id = ''
