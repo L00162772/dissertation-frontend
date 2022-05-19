@@ -76,7 +76,7 @@ for accelerator in list_accelerators_response['Accelerators']:
                                             'EvaluateTargetHealth': True
                                         }
                                     }
-                                },
+                                
                             ]
                         }
                     )
