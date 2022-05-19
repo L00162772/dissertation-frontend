@@ -117,7 +117,7 @@ create_listener_response = client.create_listener(
 print(f"create_listener_response:{create_listener_response}")
 
 create_endpoint_group_response = client.create_endpoint_group(
-    ListenerArn=create_listener_response['ListenerARN'],
+    ListenerArn=create_listener_response['ListenerArn'],
     EndpointGroupRegion=aws_region,
     EndpointConfigurations=[
         {
