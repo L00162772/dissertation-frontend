@@ -36,7 +36,7 @@ for accelerator in list_accelerators_response['Accelerators']:
     print(f" accelerator_arn: {accelerator_arn}")
 
     tags_for_resource_response = client.list_tags_for_resource(
-        Resource=accelerator_arn)
+        ResourceArn=accelerator_arn)
     print(f"tags_for_resource_response: {tags_for_resource_response}")
 
     has_frontend_tag = False
