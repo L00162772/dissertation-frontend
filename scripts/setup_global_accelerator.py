@@ -4,8 +4,9 @@ import boto3
 aws_region = os.environ['CHOOSEN_AWS_REGION']
 aws_access_key_id = os.environ['AWS_ACCESS_KEY_ID']
 aws_secret_access_key = os.environ['AWS_SECRET_ACCESS_KEY']
-hosted_zone_id = os.environ['HOSTED_ZONE_ID']
+
 base_region = "us-east-1"
+base_dns = "atu-dissertation.com"
 
 print("aws_region:", aws_region)
 print("aws_access_key_id:", aws_access_key_id)
@@ -62,6 +63,14 @@ for accelerator in list_accelerators_response['Accelerators']:
         )
         print(f"create_accelerator_response: {create_accelerator_response}")
 
+        hosted_zones_response = route53_client.list_hosted_zones()
+        print(f"hosted_zones_response: {hosted_zones_response}")
+        for hosted_zone in hosted_zones_response['HostedZones']:
+            print(f"hosted_zone: {hosted_zone}")
+            if hosted_zone['Name'].lower() == base_dns:
+                hosted_zone_id = hosted_zone['Id']
+        
+        print(f"hosted_zone_id :{hosted_zone_id}")
         change_resource_record_sets_response = route53_client.change_resource_record_sets(
                         HostedZoneId=hosted_zone_id,
                         ChangeBatch={
