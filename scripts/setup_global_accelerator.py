@@ -82,7 +82,9 @@ if not has_frontend_tag:
     str = '/hostedzone/'
     hosted_zone_id = hosted_zone_id[len(str):]
     print(f"hosted_zone_id 2:{hosted_zone_id}")
-    global_accelerator_dns_name = 'frontend.atu-dissertation.com'
+    frontend_dns_name = 'frontend.atu-dissertation.com'
+    print(f"frontend_dns_name:{frontend_dns_name}")
+    global_accelerator_dns_name = 'FIND ME'
     print(f"global_accelerator_dns_name:{global_accelerator_dns_name}")
     alb_dns_name = f'{aws_region}-alb-frontend.atu-dissertation.com'
     print(f"alb_dns_name:{alb_dns_name}")
