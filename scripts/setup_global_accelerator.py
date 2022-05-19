@@ -80,7 +80,10 @@ if not has_frontend_tag:
     str = '/hostedzone/'
     hosted_zone_id = hosted_zone_id[len(str):]
     print(f"hosted_zone_id 2:{hosted_zone_id}")
-    dns_name = f'{aws_region}-alb-frontend.atu-dissertation.com'
+    global_accelerator_dns_name = 'frontend.atu-dissertation.com'
+    print(f"global_accelerator_dns_name:{global_accelerator_dns_name}")
+    alb_dns_name = f'{aws_region}-alb-frontend.atu-dissertation.com'
+    print(f"alb_dns_name:{alb_dns_name}")
     change_resource_record_sets_response = route53_client.change_resource_record_sets(
         HostedZoneId=hosted_zone_id,
         ChangeBatch={
@@ -88,13 +91,13 @@ if not has_frontend_tag:
                 {
                     'Action': 'CREATE',
                     'ResourceRecordSet': {
-                        'Name': dns_name,
+                        'Name': global_accelerator_dns_name,
                         'Type': 'A',
                         'SetIdentifier': 'string',
                         'Region': 'us-east-1',
                         'AliasTarget': {
                             'HostedZoneId': hosted_zone_id,
-                            'DNSName': dns_name,
+                            'DNSName': alb_dns_name,
                             'EvaluateTargetHealth': True
                         }
                     }
