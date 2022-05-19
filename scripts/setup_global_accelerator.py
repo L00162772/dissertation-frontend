@@ -77,7 +77,8 @@ if not has_frontend_tag:
             break
 
     print(f"hosted_zone_id 1:{hosted_zone_id}")
-    hosted_zone_id = hosted_zone_id[11:]
+    str = '/hostedzone/'
+    hosted_zone_id = hosted_zone_id[len(str):]
     print(f"hosted_zone_id 2:{hosted_zone_id}")
     change_resource_record_sets_response = route53_client.change_resource_record_sets(
         HostedZoneId=hosted_zone_id,
@@ -119,7 +120,7 @@ create_listener_response = client.create_listener(
 print(f"create_listener_response:{create_listener_response}")
 
 create_endpoint_group_response = client.create_endpoint_group(
-    ListenerArn=create_listener_response['ListenerArn'],
+    ListenerArn=create_listener_response['Listener']['ListenerArn'],
     EndpointGroupRegion=aws_region,
     EndpointConfigurations=[
         {
