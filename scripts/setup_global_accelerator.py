@@ -77,7 +77,7 @@ if not has_frontend_tag:
             break
 
     print(f"hosted_zone_id 1:{hosted_zone_id}")
-    hosted_zone_id = hosted_zone_id.find('/', hosted_zone_id.find('/') + 1)
+    hosted_zone_id = hosted_zone_id[11:]
     print(f"hosted_zone_id 2:{hosted_zone_id}")
     change_resource_record_sets_response = route53_client.change_resource_record_sets(
         HostedZoneId=hosted_zone_id,
