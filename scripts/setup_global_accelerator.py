@@ -101,7 +101,7 @@ if not has_frontend_tag:
                             'EvaluateTargetHealth': True
                         }
                     }
-                },
+                }, 
             ]
         }
     )
