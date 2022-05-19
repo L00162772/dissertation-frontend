@@ -5,19 +5,22 @@ aws_region = os.environ['CHOOSEN_AWS_REGION']
 aws_access_key_id = os.environ['AWS_ACCESS_KEY_ID']
 aws_secret_access_key = os.environ['AWS_SECRET_ACCESS_KEY']
 hosted_zone_id = os.environ['HOSTED_ZONE_ID']
+base_region = "us-east-1"
 
 print("aws_region:", aws_region)
 print("aws_access_key_id:", aws_access_key_id)
 print("aws_secret_access_key:", aws_secret_access_key)
-print("In invalidate_cloudfront_distribution")
+print("In setup global accelerator")
 
 client = boto3.client('globalaccelerator',
     aws_access_key_id=aws_access_key_id,
-    aws_secret_access_key=aws_secret_access_key)
+    aws_secret_access_key=aws_secret_access_key,
+    region_name=base_region)
 
 route53_client = boto3.client('route53',
     aws_access_key_id=aws_access_key_id,
-    aws_secret_access_key=aws_secret_access_key)
+    aws_secret_access_key=aws_secret_access_key,
+    region_name=base_region)
     
 print("Here 2")  
 list_accelerators_response = client.list_accelerators()
