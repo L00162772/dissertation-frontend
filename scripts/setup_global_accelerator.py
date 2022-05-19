@@ -121,9 +121,9 @@ create_endpoint_group_response = client.create_endpoint_group(
     EndpointGroupRegion=aws_region,
     EndpointConfigurations=[
         {
-            'EndpointId': aws_region',
+            'EndpointId': aws_region,
             'Weight': 123,
-            'ClientIPPreservationEnabled': |False
+            'ClientIPPreservationEnabled': False
         },
     ],
     HealthCheckPort=80,
