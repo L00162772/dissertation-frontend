@@ -40,4 +40,4 @@ locals {
   alb_domain        = "${var.aws_region}-alb-frontend.${var.route53_domain}"
   frontend_domain   = "frontend.${var.route53_domain}"
   s3_origin_id      = "${var.aws_region}-frontend-s3-origin"
-} 
+}
