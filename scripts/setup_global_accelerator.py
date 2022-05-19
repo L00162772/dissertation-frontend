@@ -30,6 +30,7 @@ print(f"list_accelerators_response: {list_accelerators_response}")
 
 distribution_id = ''
 has_frontend_tag = False
+accelerator_arn = ''
 for accelerator in list_accelerators_response['Accelerators']:
     print(f" accelerator: {accelerator}")
     accelerator_arn = accelerator['AcceleratorArn']
@@ -100,3 +101,42 @@ if not has_frontend_tag:
     )
     print(
         f"change_resource_record_sets_response: {create_accelerator_response}")
+
+
+create_listener_response = client.create_listener(
+    AcceleratorArn=accelerator_arn,
+    PortRanges=[
+        {
+            'FromPort': 80,
+            'ToPort': 80
+        },
+    ],
+    Protocol='TCP',
+    ClientAffinity='NONE'
+)
+print(f"create_listener_response:{create_listener_response}")
+
+create_endpoint_group_response = client.create_endpoint_group(
+    ListenerArn=create_listener_response['ListenerARN'],
+    EndpointGroupRegion=aws_region,
+    EndpointConfigurations=[
+        {
+            'EndpointId': aws_region',
+            'Weight': 123,
+            'ClientIPPreservationEnabled': |False
+        },
+    ],
+    HealthCheckPort=80,
+    HealthCheckProtocol='HTTP',
+    HealthCheckPath='/index.html',
+    HealthCheckIntervalSeconds=30,
+    ThresholdCount=3,
+    IdempotencyToken='string',
+    PortOverrides=[
+        {
+            'ListenerPort': 80,
+            'EndpointPort': 80
+        },
+    ]
+)
+print(f"create_endpoint_group_response:{create_endpoint_group_response}")
