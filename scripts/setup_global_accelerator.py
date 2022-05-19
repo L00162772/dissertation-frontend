@@ -91,10 +91,9 @@ if not has_frontend_tag:
                         'Type': 'A',
                         'SetIdentifier': 'string',
                         'Region': 'us-east-1',
-                        'TTL': 60,
                         'AliasTarget': {
                             'HostedZoneId': hosted_zone_id,
-                            'DNSName': 'string',
+                            'DNSName': f'{aws_region}-alb-frontend.atu-dissertation.com',
                             'EvaluateTargetHealth': True
                         }
                     }
@@ -102,7 +101,7 @@ if not has_frontend_tag:
             ]
         }
     )
-    print(f"change_resource_record_sets_response: {create_accelerator_response}")
+    print(f"change_resource_record_sets_response: {change_resource_record_sets_response}")
 
 
 create_listener_response = client.create_listener(
@@ -121,24 +120,11 @@ print(f"create_listener_response:{create_listener_response}")
 create_endpoint_group_response = client.create_endpoint_group(
     ListenerArn=create_listener_response['Listener']['ListenerArn'],
     EndpointGroupRegion=aws_region,
-    EndpointConfigurations=[
-        {
-            'EndpointId': aws_region,
-            'Weight': 123,
-            'ClientIPPreservationEnabled': False
-        },
-    ],
     HealthCheckPort=80,
     HealthCheckProtocol='HTTP',
     HealthCheckPath='/index.html',
     HealthCheckIntervalSeconds=30,
     ThresholdCount=3,
     IdempotencyToken='string',
-    PortOverrides=[
-        {
-            'ListenerPort': 80,
-            'EndpointPort': 80
-        },
-    ]
 )
 print(f"create_endpoint_group_response:{create_endpoint_group_response}")
