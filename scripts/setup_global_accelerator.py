@@ -40,7 +40,7 @@ for accelerator in list_accelerators_response['Accelerators']:
     print(f"tags_for_resource_response: {tags_for_resource_response}")
 
     has_frontend_tag = False
-    for tag in tags_for_resource_response['Tags']['Items']:
+    for tag in tags_for_resource_response['Tags']:
         print(f" tag: {tag}")
         key = tag['Key']
         value = tag['Value']
