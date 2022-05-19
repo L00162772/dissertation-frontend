@@ -29,6 +29,7 @@ list_accelerators_response = client.list_accelerators()
 print(f"list_accelerators_response: {list_accelerators_response}")
 
 distribution_id = ''
+has_frontend_tag = False
 for accelerator in list_accelerators_response['Accelerators']:
     print(f" accelerator: {accelerator}")
     accelerator_arn = accelerator['AcceleratorArn']
@@ -49,8 +50,9 @@ for accelerator in list_accelerators_response['Accelerators']:
 
     
     if has_frontend_tag:
-        break;
-    else:
+        break
+    
+if not has_frontend_tag:
         create_accelerator_response = client.create_accelerator(
             Name='frontend',
             IpAddressType='IPV4',
