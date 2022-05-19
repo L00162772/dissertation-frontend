@@ -13,6 +13,11 @@ variable "route53_domain" {
   description = "Domain to deploy the application at"
 }
 
+variable "vpc_name" {
+  type    = string
+  default = "frontend"
+}
+
 variable "vpc_cidr_block" {
   description = "CIDR block for VPC"
   type        = string

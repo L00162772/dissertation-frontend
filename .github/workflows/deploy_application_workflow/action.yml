@@ -31,7 +31,7 @@ runs:
         aws_region: ${{ matrix.aws_region }}      
         TF_API_TOKEN: ${{ inputs.TF_API_TOKEN }}
 
-    - uses: ./.github/workflows/deploy_application_workflow/global_accelerator
+    - uses: ./.github/workflows/deploy_application_workflow/setup_global_accelerator
       with:
         aws_region: ${{ matrix.aws_region }}      
         AWS_ACCESS_KEY_ID: ${{ inputs.AWS_ACCESS_KEY_ID }}  

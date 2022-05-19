@@ -10,9 +10,6 @@ global_accelerator_region = "us-west-2"
 base_route53_region = "us-east-1"
 base_application_dns = "atu-dissertation.com."
 
-print("aws_region:", aws_region)
-print("aws_access_key_id:", aws_access_key_id)
-print("aws_secret_access_key:", aws_secret_access_key)
 print("In setup global accelerator")
 
 client = boto3.client('globalaccelerator',
@@ -31,12 +28,13 @@ print(f"list_accelerators_response: {list_accelerators_response}")
 distribution_id = ''
 has_application_type_tag = False
 accelerator_arn = ''
+accelerator_dns = ''
 for accelerator in list_accelerators_response['Accelerators']:
-    print(f" accelerator: {accelerator}")
-    accelerator_arn = accelerator['AcceleratorArn']
-    print(f" accelerator_arn: {accelerator_arn}")
+    print(f"accelerator: {accelerator}")
+    temp_accelerator_arn = accelerator['AcceleratorArn']
+    print(f"temp_accelerator_arn: {temp_accelerator_arn}")
 
-    tags_for_resource_response = client.list_tags_for_resource(ResourceArn=accelerator_arn)
+    tags_for_resource_response = client.list_tags_for_resource(ResourceArn=temp_accelerator_arn)
     print(f"tags_for_resource_response: {tags_for_resource_response}")
 
     has_application_type_tag = False
@@ -46,6 +44,9 @@ for accelerator in list_accelerators_response['Accelerators']:
         value = tag['Value']
         if key == 'Name' and value.lower() == application_type:
             has_application_type_tag = True
+            accelerator_arn = temp_accelerator_arn
+            accelerator_dns = accelerator['DnsName']
+            print(f"accelerator_dns: {accelerator_dns}")
 
         print(f"has_application_type_tag: {has_application_type_tag}")
 
@@ -67,6 +68,9 @@ if not has_application_type_tag:
     print(f"create_accelerator_response: {create_accelerator_response}")
     accelerator_arn = create_accelerator_response['Accelerator']['AcceleratorArn']
     print(f"accelerator_arn: {accelerator_arn}")
+
+    accelerator_dns = create_accelerator_response['Accelerator']['DnsName']
+    print(f"accelerator_dns: {accelerator_dns}")
     
     hosted_zones_response = route53_client.list_hosted_zones()
     print(f"hosted_zones_response: {hosted_zones_response}")
@@ -85,7 +89,7 @@ if not has_application_type_tag:
     application_type_dns_name = f'{application_type}.atu-dissertation.com'
     print(f"application_type_dns_name:{application_type_dns_name}")
 
-    global_accelerator_dns_name = 'FIND ME'
+    global_accelerator_dns_name = accelerator_dns
     print(f"global_accelerator_dns_name:{global_accelerator_dns_name}")
 
     alb_dns_name = f'{aws_region}-alb-{application_type}.atu-dissertation.com'

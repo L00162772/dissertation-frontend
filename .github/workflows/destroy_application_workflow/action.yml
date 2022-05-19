@@ -33,4 +33,16 @@ runs:
 
       - name: Terraform Destroy
         run: cd terraform && terraform destroy -auto-approve  
-        shell: bash        
+        shell: bash  
+
+      - uses: ./.github/workflows/destroy_application_workflow/destroy_global_accelerator
+        with:
+          aws_region: ${{ matrix.aws_region }}      
+          AWS_ACCESS_KEY_ID: ${{ inputs.AWS_ACCESS_KEY_ID }}  
+          AWS_SECRET_ACCESS_KEY: ${{ inputs.AWS_SECRET_ACCESS_KEY }}    
+
+      - uses: ./.github/workflows/destroy_application_workflow/destroy_route53
+        with:
+          aws_region: ${{ matrix.aws_region }}      
+          AWS_ACCESS_KEY_ID: ${{ inputs.AWS_ACCESS_KEY_ID }}  
+          AWS_SECRET_ACCESS_KEY: ${{ inputs.AWS_SECRET_ACCESS_KEY }}                        
