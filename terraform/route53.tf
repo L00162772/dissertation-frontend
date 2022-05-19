@@ -48,19 +48,3 @@ resource "aws_route53_record" "alb_frontend" {
   ]
 }
 
-resource "aws_route53_record" "frontend" {
-  count   = var.aws_region == "us-east-1" ? 1 : 0
-  zone_id = data.aws_route53_zone.frontend_route53.zone_id
-  name    = "frontend"
-  type    = "A"
-
-  alias {
-    name                   = aws_globalaccelerator_listener.frontend_global_accelerator[1].dns_name
-    zone_id                = aws_globalaccelerator_listener.frontend_global_accelerator[1].zone_id
-    evaluate_target_health = true
-  }
-
-  depends_on = [
-    aws_globalaccelerator_listener.frontend_global_accelerator[1]
-  ]
-}
