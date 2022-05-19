@@ -1,6 +1,7 @@
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "2.64.0"
+  # version = "2.64.0"
+  version = "3.14.0"
 
   name = var.vpc_name
   cidr = var.vpc_cidr_block
@@ -11,4 +12,9 @@ module "vpc" {
 
   enable_nat_gateway = false
   enable_vpn_gateway = var.enable_vpn_gateway
+
+  tags = {
+    Terraform = "true"
+    Environment = "dev"
+  }
 }
