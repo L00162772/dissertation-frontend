@@ -25,7 +25,7 @@ route53_client = boto3.client('route53',
 elbv2_client = boto3.client('elbv2',
                               aws_access_key_id=aws_access_key_id,
                               aws_secret_access_key=aws_secret_access_key,
-                              region_name=base_route53_region)
+                              region_name=aws_region)
 
 list_accelerators_response = client.list_accelerators()
 print(f"list_accelerators_response: {list_accelerators_response}")
