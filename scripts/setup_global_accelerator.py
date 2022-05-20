@@ -138,7 +138,7 @@ if len(list_listeners_response['Listeners']) <= 0:
             },
         ],
         Protocol='TCP',
-        ClientAffinity='NONE'
+        ClientAffinity='NONE' 
     )
     print(f"create_listener_response:{create_listener_response}")
     listenerARN = create_listener_response['Listener']['ListenerArn']
