@@ -10,7 +10,7 @@ global_accelerator_region = "us-west-2"
 base_route53_region = "us-east-1"
 base_application_dns = "atu-dissertation.com."
 
-print("In destroy global accelerator")
+print("In destroy route53")
 
 client = boto3.client('globalaccelerator',
                       aws_access_key_id=aws_access_key_id,
@@ -67,22 +67,34 @@ for accelerator in list_accelerators_response['Accelerators']:
             
         global_accelerator_dns_name = accelerator_dns
         print(f"global_accelerator_dns_name:{global_accelerator_dns_name}")
+
+        application_type_dns_name = f'{application_type}.atu-dissertation.com'
+        print(f"application_type_dns_name:{application_type_dns_name}")
+
+        list_resource_record_sets_response = route53_client.list_resource_record_sets(HostedZoneId=hosted_zone_id)
+        print(f"list_resource_record_sets_response:{list_resource_record_sets_response}")
+
         change_resource_record_sets_response = route53_client.change_resource_record_sets(
-                HostedZoneId=hosted_zone_id,
-                ChangeBatch={
-                    'Changes': [
-                        {
-                            'Action': 'DELETE',
-                            'ResourceRecordSet': {
-                                'Name': global_accelerator_dns_name,
-                                'Type': 'A',
-                                'SetIdentifier': 'string',
-                                'Region': 'us-east-1',
-                            }
-                        }, 
-                    ]
-                }
-            )
+        HostedZoneId=hosted_zone_id,
+        ChangeBatch={
+            'Changes': [
+                {
+                    'Action': 'DELETE',
+                    'ResourceRecordSet': {
+                        'Name': application_type_dns_name,
+                        'Type': 'A',
+                        'SetIdentifier': 'Simple',
+                        'Region': 'us-east-1',
+                        'AliasTarget': {
+                            'HostedZoneId': 'Z2BJ6XQ5FK7U4H',
+                            'DNSName': global_accelerator_dns_name,
+                            'EvaluateTargetHealth': True
+                        }
+                    }
+                }, 
+            ]
+        }
+    )
         print(f"change_resource_record_sets_response: {change_resource_record_sets_response}")
         break
 

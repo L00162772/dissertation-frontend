@@ -22,6 +22,11 @@ route53_client = boto3.client('route53',
                               aws_secret_access_key=aws_secret_access_key,
                               region_name=base_route53_region)
 
+elbv2_client = boto3.client('elbv2',
+                              aws_access_key_id=aws_access_key_id,
+                              aws_secret_access_key=aws_secret_access_key,
+                              region_name=base_route53_region)
+
 list_accelerators_response = client.list_accelerators()
 print(f"list_accelerators_response: {list_accelerators_response}")
 
@@ -102,13 +107,13 @@ if not has_application_type_tag:
                 {
                     'Action': 'CREATE',
                     'ResourceRecordSet': {
-                        'Name': global_accelerator_dns_name,
+                        'Name': application_type_dns_name,
                         'Type': 'A',
-                        'SetIdentifier': 'string',
+                        'SetIdentifier': 'Simple',
                         'Region': 'us-east-1',
                         'AliasTarget': {
-                            'HostedZoneId': hosted_zone_id,
-                            'DNSName': alb_dns_name,
+                            'HostedZoneId': 'Z2BJ6XQ5FK7U4H',
+                            'DNSName': global_accelerator_dns_name,
                             'EvaluateTargetHealth': True
                         }
                     }
@@ -119,26 +124,53 @@ if not has_application_type_tag:
     print(f"change_resource_record_sets_response: {change_resource_record_sets_response}")
 
 
-create_listener_response = client.create_listener(
-    AcceleratorArn=accelerator_arn,
-    PortRanges=[
-        {
-            'FromPort': 80,
-            'ToPort': 80
-        },
-    ],
-    Protocol='TCP',
-    ClientAffinity='NONE'
-)
-print(f"create_listener_response:{create_listener_response}")
+list_listeners_response = client.list_listeners( AcceleratorArn=accelerator_arn)
+print(f"list_listeners_response: {list_listeners_response}")
+print(f"type: {type(list_listeners_response)}")
+listenerARN = ''
+if len(list_listeners_response['Listeners']) <= 0:
+    create_listener_response = client.create_listener(
+        AcceleratorArn=accelerator_arn,
+        PortRanges=[
+            {
+                'FromPort': 80,
+                'ToPort': 80
+            },
+        ],
+        Protocol='TCP',
+        ClientAffinity='NONE'
+    )
+    print(f"create_listener_response:{create_listener_response}")
+    listenerARN = create_listener_response['Listener']['ListenerArn']
+else:
+    listenerARN = list_listeners_response['Listeners'][0]['ListenerArn']
+
+describe_load_balancers_response = elbv2_client.describe_load_balancers()
+print(f"describe_load_balancers_response:{describe_load_balancers_response}")
+load_balancer_arn = ''
+for load_balancer in describe_load_balancers_response['LoadBalancers']:
+    print(f"load_balancer:{load_balancer}")
+
+    load_balancer_name = load_balancer['LoadBalancerName']
+    print(f"load_balancer_name:{load_balancer_name}")
+
+    if load_balancer_name.startswith(application_type):
+        load_balancer_arn = load_balancer['LoadBalancerArn']
 
 create_endpoint_group_response = client.create_endpoint_group(
-    ListenerArn=create_listener_response['Listener']['ListenerArn'],
+    ListenerArn=listenerARN,
     EndpointGroupRegion=aws_region,
+    EndpointConfigurations=[
+        {
+            'EndpointId': load_balancer_arn,
+            'Weight': 123,
+            'ClientIPPreservationEnabled': False
+        },
+    ],
     HealthCheckPort=80,
     HealthCheckProtocol='HTTP',
     HealthCheckPath='/index.html',
-    HealthCheckIntervalSeconds=30,
+    HealthCheckIntervalSeconds=10,
     ThresholdCount=3,
     IdempotencyToken='string',
 )
