@@ -8,7 +8,7 @@ See: https://github.com/actions/setup-python
 ## Folder Structure
 terraform: Infrastructure as Code (IaC)
 frontend: React frontend code
-
+ 
 ## Terraform Instructions
 ### Prequisite Software:
 Terraform: https://www.terraform.io/
