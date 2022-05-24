@@ -73,6 +73,7 @@ for load_balancer in describe_load_balancers_response['LoadBalancers']:
     if load_balancer_name.startswith(application_type):
         load_balancer_arn = load_balancer['LoadBalancerArn']
 
+print(f"add_accelerator_for_region:{add_accelerator_for_region}")
 if add_accelerator_for_region:
     create_endpoint_group_response = client.create_endpoint_group(
         ListenerArn=listenerARN,
