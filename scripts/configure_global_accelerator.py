@@ -98,11 +98,11 @@ else:
     for endpoint_group in list_endpoint_groups_response['EndpointGroups']:
         print(f"endpoint_group:{endpoint_group}")
         endpoint_group_region = endpoint_group['EndpointGroupRegion']
-        print(f"endpoint_group_region:{endpoint_group_region}")
+        print(f"endpoint_group_region:'{endpoint_group_region}', aws_region:'{aws_region}'")
         if endpoint_group_region.lower() == aws_region.lower():
             print(f"Deleting endpoint group for region {aws_region}")
             endpoint_group_arn = endpoint_group['EndpointGroupArn']
             print(f"endpoint_group_arn:{endpoint_group_arn}")
             
             delete_endpoint_group_response = client.delete_endpoint_group(EndpointGroupArn=endpoint_group_arn)
-            print(f"create_endpoint_group_response:{delete_endpoint_group_response}")
+            print(f"delete_endpoint_group_response:{delete_endpoint_group_response}")
