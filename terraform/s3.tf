@@ -21,7 +21,7 @@ resource "aws_s3_bucket" "frontend_s3_bucket" {
 
 resource "aws_s3_bucket_website_configuration" "frontend_s3_bucket_configuration" {
   bucket = aws_s3_bucket.frontend_s3_bucket.bucket
-
+  acl    = "public-read"
   index_document {
     suffix = "index.html"
   }
@@ -29,14 +29,6 @@ resource "aws_s3_bucket_website_configuration" "frontend_s3_bucket_configuration
   error_document {
     key = "index.html"
   }
-}
-resource "aws_s3_bucket_acl" "frontend_s3_bucket_acl" {
-  bucket = aws_s3_bucket.frontend_s3_bucket.id
-  acl    = "public-read"
-
-  depends_on = [
-    aws_s3_bucket.frontend_s3_bucket
-  ]
 }
 
 resource "aws_s3_bucket_public_access_block" "frontend_s3_access_control" {
