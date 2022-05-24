@@ -75,6 +75,7 @@ for load_balancer in describe_load_balancers_response['LoadBalancers']:
 
 print(f"add_accelerator_for_region:{add_accelerator_for_region}")
 if add_accelerator_for_region:
+    print("Adding a global accelerator")
     create_endpoint_group_response = client.create_endpoint_group(
         ListenerArn=listenerARN,
         EndpointGroupRegion=aws_region,
@@ -94,6 +95,7 @@ if add_accelerator_for_region:
     )
     print(f"create_endpoint_group_response:{create_endpoint_group_response}")
 else:
+    print("Deleting a global accelerator endpoint group")
     list_endpoint_groups_response = client.list_endpoint_groups(ListenerArn=listenerARN)
     print(f"list_endpoint_groups_response:{list_endpoint_groups_response}")
     for endpoint_group in list_endpoint_groups_response['EndpointGroups']:
