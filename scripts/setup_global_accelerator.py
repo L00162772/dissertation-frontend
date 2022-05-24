@@ -157,21 +157,33 @@ for load_balancer in describe_load_balancers_response['LoadBalancers']:
     if load_balancer_name.startswith(application_type):
         load_balancer_arn = load_balancer['LoadBalancerArn']
 
-create_endpoint_group_response = client.create_endpoint_group(
-    ListenerArn=listenerARN,
-    EndpointGroupRegion=aws_region,
-    EndpointConfigurations=[
-        {
-            'EndpointId': load_balancer_arn,
-            'Weight': 123,
-            'ClientIPPreservationEnabled': False
-        },
-    ],
-    HealthCheckPort=80,
-    HealthCheckProtocol='HTTP',
-    HealthCheckPath='/index.html',
-    HealthCheckIntervalSeconds=10,
-    ThresholdCount=3,
-    IdempotencyToken='string',
-)
-print(f"create_endpoint_group_response:{create_endpoint_group_response}")
+list_endpoint_groups_response = client.list_endpoint_groups(ListenerArn=listenerARN)
+print(f"list_endpoint_groups_response:{list_endpoint_groups_response}")
+endpoint_group_found = False
+for endpoint_group in list_endpoint_groups_response['EndpointGroups']:
+    print(f"endpoint_group:{endpoint_group}")
+    endpoint_group_region = endpoint_group['EndpointGroupRegion']
+    print(f"endpoint_group_region:{endpoint_group_region}")
+    if endpoint_group_region.lower() == aws_region.lower():
+        print(f"Endpoint group found for region {aws_region}")
+        endpoint_group_found = True
+
+if not endpoint_group_found:
+    create_endpoint_group_response = client.create_endpoint_group(
+        ListenerArn=listenerARN,
+        EndpointGroupRegion=aws_region,
+        EndpointConfigurations=[
+            {
+                'EndpointId': load_balancer_arn,
+                'Weight': 123,
+                'ClientIPPreservationEnabled': False
+            },
+        ],
+        HealthCheckPort=80,
+        HealthCheckProtocol='HTTP',
+        HealthCheckPath='/index.html',
+        HealthCheckIntervalSeconds=10,
+        ThresholdCount=3,
+        IdempotencyToken='string',
+    )
+    print(f"create_endpoint_group_response:{create_endpoint_group_response}")
