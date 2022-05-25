@@ -1,5 +1,6 @@
 import os
 import boto3
+import time
 
 aws_region = os.environ['CHOOSEN_AWS_REGION']
 aws_access_key_id = os.environ['AWS_ACCESS_KEY_ID']
@@ -187,3 +188,8 @@ if not endpoint_group_found:
         IdempotencyToken='string',
     )
     print(f"create_endpoint_group_response:{create_endpoint_group_response}")
+
+
+print("TEMP - Pre sleep.")
+time.sleep(240)
+print("TEMP - Post sleep.")
