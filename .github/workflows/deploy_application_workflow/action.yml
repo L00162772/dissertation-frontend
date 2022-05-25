@@ -42,7 +42,7 @@ runs:
         aws_region: ${{ matrix.aws_region }}      
         AWS_ACCESS_KEY_ID: ${{ inputs.AWS_ACCESS_KEY_ID }}  
         AWS_SECRET_ACCESS_KEY: ${{ inputs.AWS_SECRET_ACCESS_KEY }}  
-        ADD_ACCELERATOR_FOR_REGION: false
+        ADD_ACCELERATOR_FOR_REGION: False
 
     - uses: ./.github/workflows/deploy_application_workflow/deploy_application
       with:
@@ -55,4 +55,4 @@ runs:
         aws_region: ${{ matrix.aws_region }}      
         AWS_ACCESS_KEY_ID: ${{ inputs.AWS_ACCESS_KEY_ID }}  
         AWS_SECRET_ACCESS_KEY: ${{ inputs.AWS_SECRET_ACCESS_KEY }}  
-        ADD_ACCELERATOR_FOR_REGION: true
+        ADD_ACCELERATOR_FOR_REGION: True
