@@ -190,6 +190,3 @@ if not endpoint_group_found:
     print(f"create_endpoint_group_response:{create_endpoint_group_response}")
 
 
-print("TEMP - Pre sleep.")
-time.sleep(240)
-print("TEMP - Post sleep.")

@@ -33,6 +33,6 @@ runs:
 
       - name: Provision Global Accelerator
         run: |
-             CHOOSEN_AWS_REGION=${{ inputs.aws_region }} AWS_ACCESS_KEY_ID=${{ inputs.AWS_ACCESS_KEY_ID }} AWS_SECRET_ACCESS_KEY=${{ inputs.AWS_SECRET_ACCESS_KEY }} APPLICATION_TYPE=frontend ADD_ACCELERATOR_FOR_REGION=${{ inputs.add_accelerator_for_region }} python3 scripts/configure_global_accelerator.py
+             CHOOSEN_AWS_REGION=${{ inputs.aws_region }} AWS_ACCESS_KEY_ID=${{ inputs.AWS_ACCESS_KEY_ID }} AWS_SECRET_ACCESS_KEY=${{ inputs.AWS_SECRET_ACCESS_KEY }} APPLICATION_TYPE=frontend ADD_ACCELERATOR_FOR_REGION=${{ inputs.add_accelerator_for_region }} python3 scripts/configure_global_accelerator_for_deployment.py
         shell: bash
   
