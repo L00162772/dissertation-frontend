@@ -1,6 +1,5 @@
 import os
 import boto3
-import time
 
 aws_region = os.environ['CHOOSEN_AWS_REGION']
 aws_access_key_id = os.environ['AWS_ACCESS_KEY_ID']
