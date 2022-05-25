@@ -57,9 +57,10 @@ for accelerator in list_accelerators_response['Accelerators']:
 list_listeners_response = client.list_listeners( AcceleratorArn=accelerator_arn)
 print(f"list_listeners_response: {list_listeners_response}")
 print(f"type: {type(list_listeners_response)}")
-listenerARN = ''
-if add_accelerator_for_region.lower() == "true" and len(list_listeners_response['Listeners']) > 0:
-    listenerARN = list_listeners_response['Listeners'][0]['ListenerArn']
+if len(list_listeners_response['Listeners']) <= 0:
+    print(f"No listeners returned")
+
+listenerARN = list_listeners_response['Listeners'][0]['ListenerArn']
 
 describe_load_balancers_response = elbv2_client.describe_load_balancers()
 print(f"describe_load_balancers_response:{describe_load_balancers_response}")
