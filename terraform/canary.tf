@@ -58,7 +58,7 @@ resource "aws_synthetics_canary" "frontend_canary" {
   handler              = "synthetic_monitor.handler"
   s3_bucket            = aws_s3_bucket.frontend_canary_s3_bucket.id
   s3_key               = "synthetic_monitor.zip"
-  start_canary         = true
+  start_canary         = false
 
   success_retention_period = 2
   failure_retention_period = 14
