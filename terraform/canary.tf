@@ -35,20 +35,20 @@ resource "aws_s3_bucket_public_access_block" "frontend_canary_s3_access_control"
 }
 
 # Zip the Lamda function on the fly
-data "archive_file" "zip_frontend_canary_lambda" {
+data "archive_file" "zip_frontend_canary_test" {
   type        = "zip"
   source_dir  = "./canaryScripts"
   output_path = "./canaryScriptsOutput/canary_test.zip"
 }
 
-# Upload canary file to S3
+# Upload canary test file to S3
 resource "aws_s3_object" "frontend_canary_lambda" {
   bucket = aws_s3_bucket.frontend_canary_s3_bucket.id
   key    = "canary_test.zip"
-  source = data.archive_file.zip_frontend_canary_lambda.output_path
-  etag   = filemd5(data.archive_file.zip_frontend_canary_lambda.output_path)
+  source = data.archive_file.zip_frontend_canary_test.output_path
+  etag   = filemd5(data.archive_file.zip_frontend_canary_test.output_path)
   depends_on = [
-    data.archive_file.zip_frontend_canary_lambda
+    data.archive_file.zip_frontend_canary_test
   ]
 }
 
@@ -136,7 +136,7 @@ resource "aws_sns_topic_subscription" "frontend-canary-sns-topic-subscription" {
   endpoint  = var.canary_sns_topic_email_subscription
 }
 
-resource "aws_cloudwatch_event_rule" "frontend-canary-event-rule" {
+resource "aws_cloudwatch_event_rule" "frontend-canary-failed-event-rule" {
   name = "frontend-canary-event-rule"
   event_pattern = jsonencode({
     source = ["aws.synthetics"]
@@ -148,8 +148,88 @@ resource "aws_cloudwatch_event_rule" "frontend-canary-event-rule" {
 }
 
 
-resource "aws_cloudwatch_event_target" "frontend-canary-event-target" {
+resource "aws_cloudwatch_event_target" "frontend-canary-failed-event-target" {
   target_id = "FrontendCanaryFailed"
   arn       = aws_sns_topic.frontend-canary-sns-topic.arn
-  rule      = aws_cloudwatch_event_rule.frontend-canary-event-rule.name
+  rule      = aws_cloudwatch_event_rule.frontend-canary-failed-event-rule.name
+}
+
+
+resource "aws_iam_role" "canary_lambda_role" {
+  name               = "Spacelift_Test_Lambda_Function_Role"
+  assume_role_policy = <<EOF
+{
+ "Version": "2012-10-17",
+ "Statement": [
+   {
+     "Action": "sts:AssumeRole",
+     "Principal": {
+       "Service": "lambda.amazonaws.com"
+     },
+     "Effect": "Allow",
+     "Sid": ""
+   }
+ ]
+}
+EOF
+}
+
+resource "aws_iam_policy" "canary_iam_policy_for_lambda" {
+
+  name        = "aws_iam_policy_for_terraform_aws_lambda_role"
+  path        = "/"
+  description = "AWS IAM Policy for managing aws lambda role"
+  policy      = <<EOF
+{
+ "Version": "2012-10-17",
+ "Statement": [
+   {
+     "Action": [
+       "logs:CreateLogGroup",
+       "logs:CreateLogStream",
+       "logs:PutLogEvents"
+     ],
+     "Resource": "arn:aws:logs:*:*:*",
+     "Effect": "Allow"
+   }
+ ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "canary_attach_iam_policy_to_iam_role" {
+  role       = aws_iam_role.canary_lambda_role.name
+  policy_arn = aws_iam_policy.canary_iam_policy_for_lambda.arn
+}
+
+# Zip the Lamda function on the fly
+data "archive_file" "zip_frontend_canary_lambda" {
+  type        = "zip"
+  source_dir  = "./canaryLambda"
+  output_path = "./canaryLambdaOutput/canary_lambda.zip"
+}
+
+# Upload canary lambda file to S3
+resource "aws_s3_object" "frontend_canary_lambda" {
+  bucket = aws_s3_bucket.frontend_canary_s3_bucket.id
+  key    = "canary_lambda.zip"
+  source = data.archive_file.zip_frontend_canary_lambda.output_path
+  etag   = filemd5(data.archive_file.zip_frontend_canary_lambda.output_path)
+  depends_on = [
+    data.archive_file.zip_frontend_canary_lambda
+  ]
+}
+
+resource "aws_lambda_function" "terraform_lambda_func" {
+  s3_bucket     = aws_s3_bucket.frontend_canary_s3_bucket.id
+  s3_key        = "canary_lambda.zip"
+  function_name = "canary_lambda"
+  role          = aws_iam_role.canary_lambda_role.arn
+  handler       = "canary_lambda.lambda_handler"
+  runtime       = "python3.9"
+
+  depends_on = [
+    aws_iam_role_policy_attachment.canary_attach_iam_policy_to_iam_role,
+    data.archive_file.zip_frontend_canary_lambda
+  ]
 }
