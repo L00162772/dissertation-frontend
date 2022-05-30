@@ -141,7 +141,7 @@ resource "aws_cloudwatch_event_rule" "frontend-canary-failed-event-rule" {
 
 resource "aws_cloudwatch_event_target" "frontend-canary-failed-event-target" {
   target_id = "${var.aws_region}-FrontendCanaryFailed"
-  arn       = aws_lambda_function.terraform_lambda_func
+  arn       = aws_lambda_function.terraform_lambda_func.arn
   rule      = aws_cloudwatch_event_rule.frontend-canary-failed-event-rule.name
 }
 
