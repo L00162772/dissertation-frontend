@@ -43,15 +43,3 @@ resource "aws_s3_bucket_policy" "frontend_s3_bucket_policy" {
 }
 
 
-resource "aws_s3_bucket" "frontend_canary_s3_bucket" {
-  bucket        = "${var.aws_region}-canary-${var.bucket_name_postfix}"
-  acl           = "private-read"
-  force_destroy = true
-}
-
-
-resource "aws_s3_bucket_public_access_block" "frontend_canary_s3_access_control" {
-  bucket             = aws_s3_bucket.frontend_canary_s3_bucket.id
-  block_public_acls  = true
-  ignore_public_acls = true
-}
