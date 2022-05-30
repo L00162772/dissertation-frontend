@@ -16,12 +16,9 @@ data "aws_iam_policy_document" "s3-website-policy" {
 resource "aws_s3_bucket" "frontend_s3_bucket" {
   bucket        = "${var.aws_region}-${var.bucket_name_postfix}"
   force_destroy = true
+  acl           = "public-read"
 }
 
-resource "aws_s3_bucket_acl" "frontend_s3_bucket_acl" {
-  bucket = aws_s3_bucket.frontend_s3_bucket.id
-  acl    = "public-read"
-}
 
 resource "aws_s3_bucket_website_configuration" "frontend_s3_bucket_configuration" {
   bucket = aws_s3_bucket.frontend_s3_bucket.bucket

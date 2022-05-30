@@ -22,11 +22,9 @@ resource "aws_iam_role" "canary_role" {
 resource "aws_s3_bucket" "frontend_canary_s3_bucket" {
   bucket        = "${var.aws_region}-canary-${var.bucket_name_postfix}"
   force_destroy = true
+  acl           = "private"
 }
-resource "aws_s3_bucket_acl" "frontend_canary_s3_bucket_acl" {
-  bucket = aws_s3_bucket.frontend_canary_s3_bucket.id
-  acl    = "private"
-}
+
 
 resource "aws_s3_bucket_public_access_block" "frontend_canary_s3_access_control" {
   bucket             = aws_s3_bucket.frontend_canary_s3_bucket.id
@@ -37,7 +35,7 @@ resource "aws_s3_bucket_public_access_block" "frontend_canary_s3_access_control"
 # Zip the Lamda function on the fly
 data "archive_file" "zip_frontend_synthetic_monitor" {
   type        = "zip"
-  source_dir  = "./syntheticMonitorScripts"
+  source_dir  = "./syntheticMonitorScripts/"
   output_path = "./syntheticMonitorScriptsOutput/synthetic_monitor.zip"
 }
 
