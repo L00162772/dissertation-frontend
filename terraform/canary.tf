@@ -37,8 +37,8 @@ resource "aws_s3_bucket_public_access_block" "frontend_canary_s3_access_control"
 # Zip the Lamda function on the fly
 data "archive_file" "zip_frontend_canary_lambda" {
   type        = "zip"
-  source_dir  = "${path.module}/canaryScripts"
-  output_path = "${path.module}/canaryScriptsOutput/canary_test.zip"
+  source_dir  = "${path.module}/../canaryScripts"
+  output_path = "${path.module}/../canaryScriptsOutput/canary_test.zip"
 }
 
 # Upload canary file to S3
