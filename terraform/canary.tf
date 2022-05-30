@@ -130,6 +130,11 @@ resource "aws_iam_role_policy_attachment" "frontend-canary-policy-attachment" {
 resource "aws_sns_topic" "frontend-canary-sns-topic" {
   name = "frontend-canary-sns-topic"
 }
+resource "aws_sns_topic_subscription" "frontend-canary-sns-topic-subscription" {
+  topic_arn = aws_sns_topic.frontend-canary-sns-topic.arn
+  protocol  = "email"
+  endpoint  = var.canary_sns_topic_email_subscription
+}
 
 resource "aws_cloudwatch_event_rule" "frontend-canary-event-rule" {
   name = "frontend-canary-event-rule"

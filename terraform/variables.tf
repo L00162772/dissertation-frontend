@@ -70,3 +70,8 @@ variable "private_subnet_count" {
   type        = number
   default     = 2
 }
+
+variable "canary_sns_topic_email_subscription" {
+  type    = string
+  default = "damien.gallagher@gmail.com"
+}
