@@ -27,7 +27,7 @@ print(f"canary_state:{canary_state}")
 
 print(f"start_synthetic_monitor:{start_synthetic_monitor}")
 if start_synthetic_monitor.lower() == "true":
-    if canary_state == 'STOPPED':
+    if canary_state == 'STOPPED' or canary_state == 'READY':
         print("Starting the synthetic monitor")
         start_canary_response = client.start_canary(Name=synthetic_monitor_name)
         print(f"start_canary_response:{start_canary_response}")
