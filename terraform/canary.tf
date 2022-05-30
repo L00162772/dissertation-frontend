@@ -42,7 +42,7 @@ data "archive_file" "zip_frontend_canary_test" {
 }
 
 # Upload canary test file to S3
-resource "aws_s3_object" "frontend_canary_lambda" {
+resource "aws_s3_object" "frontend_canary_test" {
   bucket = aws_s3_bucket.frontend_canary_s3_bucket.id
   key    = "canary_test.zip"
   source = data.archive_file.zip_frontend_canary_test.output_path
