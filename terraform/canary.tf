@@ -145,6 +145,6 @@ resource "aws_cloudwatch_event_rule" "frontend-canary-event-rule" {
 
 resource "aws_cloudwatch_event_target" "frontend-canary-event-target" {
   target_id = "FrontendCanaryFailed"
-  arn       = data.aws_sns_topic.frontend-canary-sns-topic.arn
+  arn       = aws_sns_topic.frontend-canary-sns-topic.arn
   rule      = aws_cloudwatch_event_rule.frontend-canary-event-rule.name
 }
