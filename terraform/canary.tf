@@ -37,14 +37,14 @@ resource "aws_s3_bucket_public_access_block" "frontend_canary_s3_access_control"
 # Zip the Lamda function on the fly
 data "archive_file" "zip_frontend_canary_lambda" {
   type        = "zip"
-  source_dir  = "canaries/"
-  output_path = "canaries/forgot_password.zip"
+  source_dir  = "${path.module}/canaryScripts/"
+  output_path = "${path.module}/canaryScripts/forgocanary_testt_password.zip"
 }
 
 # Upload canary file to S3
 resource "aws_s3_object" "frontend_canary_lambda" {
   bucket = aws_s3_bucket.frontend_canary_s3_bucket.id
-  key    = "forgot_password.zip"
+  key    = "canary_test.zip"
   source = data.archive_file.zip_frontend_canary_lambda.output_path
   etag   = filemd5(data.archive_file.zip_frontend_canary_lambda.output_path)
   depends_on = [
@@ -57,9 +57,9 @@ resource "aws_synthetics_canary" "frontend_canary" {
   artifact_s3_location = "s3://${aws_s3_bucket.frontend_canary_s3_bucket.id}"
   execution_role_arn   = aws_iam_role.frontend-canary-role.arn
   runtime_version      = "syn-python-selenium-1.0"
-  handler              = "forgot_password.handler"
+  handler              = "canary_test.handler"
   s3_bucket            = aws_s3_bucket.frontend_canary_s3_bucket.id
-  s3_key               = "forgot_password.zip"
+  s3_key               = "canary_test.zip"
   start_canary         = true
 
   success_retention_period = 2
@@ -71,9 +71,10 @@ resource "aws_synthetics_canary" "frontend_canary" {
   }
 
   run_config {
-    timeout_in_seconds = 60
-    memory_in_mb       = 960
-    active_tracing     = false
+    timeout_in_seconds    = 60
+    memory_in_mb          = 960
+    active_tracing        = false
+    environment_variables = { name = "APPLICATION_URL", value = local.cloudfront_domain }
   }
   depends_on = [
     aws_s3_object.frontend_canary_lambda
@@ -124,4 +125,26 @@ resource "aws_iam_policy" "frontend-canary-policy" {
 resource "aws_iam_role_policy_attachment" "frontend-canary-policy-attachment" {
   role       = aws_iam_role.frontend-canary-role.name
   policy_arn = aws_iam_policy.frontend-canary-policy.arn
+}
+
+resource "aws_sns_topic" "frontend-canary-sns-topic" {
+  name = "frontend-canary-sns-topic"
+}
+
+resource "aws_cloudwatch_event_rule" "frontend-canary-event-rule" {
+  name = "frontend-canary-event-rule"
+  event_pattern = jsonencode({
+    source = ["aws.synthetics"]
+    detail = {
+      "canary-name" : [aws_synthetics_canary.frontend_canary.name],
+      "test-run-status" : ["FAILED"]
+    }
+  })
+}
+
+
+resource "aws_cloudwatch_event_target" "frontend-canary-event-target" {
+  target_id = "FrontendCanaryFailed"
+  arn       = data.aws_sns_topic.frontend-canary-sns-topic.arn
+  rule      = aws_cloudwatch_event_rule.frontend-canary-event-rule.name
 }
