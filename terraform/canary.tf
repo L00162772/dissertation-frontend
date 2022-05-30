@@ -63,7 +63,7 @@ resource "aws_synthetics_canary" "frontend_canary" {
   }
 
   run_config {
-    timeout_in_seconds = 300
+    timeout_in_seconds = 60
     memory_in_mb       = 960
     active_tracing     = false
   }
