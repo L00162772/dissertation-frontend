@@ -19,7 +19,7 @@ resource "aws_s3_bucket" "frontend_s3_bucket" {
 }
 
 resource "aws_s3_bucket_acl" "frontend_s3_bucket_acl" {
-  bucket = aws_s3_bucket.exfrontend_s3_bucketmple.id
+  bucket = aws_s3_bucket.frontend_s3_bucket.id
   acl    = "public-read"
 }
 
