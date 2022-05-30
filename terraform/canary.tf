@@ -36,10 +36,9 @@ resource "aws_s3_bucket_public_access_block" "frontend_canary_s3_access_control"
 
 
 # Upload canary file to S3
-resource "aws_s3_bucket_object" "frontenf_canary_lambda" {
+resource "aws_s3_object" "frontend_canary_lambda" {
   bucket = aws_s3_bucket.frontend_canary_s3_bucket.id
   key    = "forgot_password.py"
-  acl    = "private"
   source = "canaries/forgot_password.py"
   etag   = filemd5("canaries/forgot_password.py")
 }
@@ -48,11 +47,11 @@ resource "aws_s3_bucket_object" "frontenf_canary_lambda" {
 resource "aws_synthetics_canary" "frontend_canary" {
   name                 = "frontend_canary"
   artifact_s3_location = "s3://${aws_s3_bucket.frontend_canary_s3_bucket.id}"
-  execution_role_arn   = data.aws_iam_role.frontend-canary-role.arn
+  execution_role_arn   = aws_iam_role.frontend-canary-role.arn
   runtime_version      = "syn-python-selenium-1.0"
   handler              = "forgot_password.handler"
   s3_bucket            = aws_s3_bucket.frontend_canary_s3_bucket.id
-  s3_key               = forgot_password.py
+  s3_key               = "forgot_password.py"
   start_canary         = true
 
   success_retention_period = 2
