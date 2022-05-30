@@ -105,6 +105,12 @@ data "aws_iam_policy_document" "frontend-canary-policy" {
   }
 }
 
+resource "aws_iam_policy" "frontend-canary-policy" {
+  name = "frontend-canary-policy"
+  policy = data.aws_iam_policy_document.frontend-canary-policy.json
+  description = "IAM role for AWS Synthetic Monitoring Frontend Canaries"
+}
+
 resource "aws_iam_role_policy_attachment" "frontend-canary-policy-attachment" {
   role       = aws_iam_role.frontend-canary-role.name
   policy_arn = aws_iam_policy.frontend-canary-policy.arn
