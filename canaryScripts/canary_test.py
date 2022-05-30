@@ -6,6 +6,8 @@ def canary_test():
     
     url = os.environ['APPLICATION_URL']
     print(f"url:{url}")
+    print(f"os.environ:{os.environ}")
+    
     # Set screenshot option
     takeScreenshot = True
 
@@ -19,7 +21,7 @@ def canary_test():
     if not response_code or response_code < 200 or response_code > 299:
         raise Exception("Failed to load page!")
     logger.info("Canary successfully executed")
-
+  
 def handler(event, context):
     # user defined log statements using synthetics_logger
     logger.info("Selenium Python heartbeat canary")
