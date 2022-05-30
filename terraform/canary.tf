@@ -1,6 +1,6 @@
 
 resource "aws_iam_role" "canary_role" {
-  name = "canary_role"
+  name = "${var.aws_region}-canary_role"
 
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
@@ -94,7 +94,7 @@ data "aws_iam_policy_document" "frontend-canary-assume-role-policy" {
 }
 
 resource "aws_iam_role" "frontend-canary-role" {
-  name               = "frontend-canary-role"
+  name               = "${var.aws_region}-frontend-canary-role"
   assume_role_policy = data.aws_iam_policy_document.frontend-canary-assume-role-policy.json
   description        = "IAM role for AWS Synthetic Monitoring Frontend Canaries"
 }
@@ -117,7 +117,7 @@ data "aws_iam_policy_document" "frontend-canary-policy" {
 }
 
 resource "aws_iam_policy" "frontend-canary-policy" {
-  name        = "frontend-canary-policy"
+  name        = "${var.aws_region}-frontend-canary-policy"
   policy      = data.aws_iam_policy_document.frontend-canary-policy.json
   description = "IAM role for AWS Synthetic Monitoring Frontend Canaries"
 }
@@ -137,7 +137,7 @@ resource "aws_sns_topic_subscription" "frontend-canary-sns-topic-subscription" {
 }
 
 resource "aws_cloudwatch_event_rule" "frontend-canary-failed-event-rule" {
-  name = "frontend-canary-event-rule"
+  name = "${var.aws_region}-frontend-canary-event-rule"
   event_pattern = jsonencode({
     source = ["aws.synthetics"]
     detail = {
@@ -149,14 +149,14 @@ resource "aws_cloudwatch_event_rule" "frontend-canary-failed-event-rule" {
 
 
 resource "aws_cloudwatch_event_target" "frontend-canary-failed-event-target" {
-  target_id = "FrontendCanaryFailed"
+  target_id = "${var.aws_region}-FrontendCanaryFailed"
   arn       = aws_sns_topic.frontend-canary-sns-topic.arn
   rule      = aws_cloudwatch_event_rule.frontend-canary-failed-event-rule.name
 }
 
 
 resource "aws_iam_role" "canary_lambda_role" {
-  name               = "Spacelift_Test_Lambda_Function_Role"
+  name               = "${var.aws_region}-canary-lambda-role"
   assume_role_policy = <<EOF
 {
  "Version": "2012-10-17",
@@ -176,7 +176,7 @@ EOF
 
 resource "aws_iam_policy" "canary_iam_policy_for_lambda" {
 
-  name        = "aws_iam_policy_for_terraform_aws_lambda_role"
+  name        = "${var.aws_region}_terraform_aws_lambda_role"
   path        = "/"
   description = "AWS IAM Policy for managing aws lambda role"
   policy      = <<EOF
