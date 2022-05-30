@@ -37,7 +37,7 @@ resource "aws_s3_bucket_public_access_block" "frontend_canary_s3_access_control"
 # Zip the Lamda function on the fly
 data "archive_file" "zip_frontend_canary_lambda" {
   type        = "zip"
-  source_dir  = "canaries/forgot_password.py"
+  source_dir  = "canaries/"
   output_path = "canaries/forgot_password.zip"
 }
 
