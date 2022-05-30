@@ -74,7 +74,7 @@ resource "aws_synthetics_canary" "frontend_canary" {
     timeout_in_seconds    = 60
     memory_in_mb          = 960
     active_tracing        = false
-    environment_variables = { name = "APPLICATION_URL", value = local.cloudfront_domain }
+    environment_variables = { APPLICATION_URL = local.cloudfront_domain }
   }
   depends_on = [
     aws_s3_object.frontend_canary_lambda
