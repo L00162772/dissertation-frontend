@@ -48,7 +48,7 @@ resource "aws_s3_object" "frontend_canary_lambda" {
   source = "${data.archive_file.t.output_path}"
   etag   = filemd5(data.archive_file.t.output_path)
   depends_on = [
-    archive_file.zip_frontend_canary_lambda
+    data.archive_file.zip_frontend_canary_lambda
   ]
 }
 
