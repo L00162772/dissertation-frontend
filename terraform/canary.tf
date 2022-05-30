@@ -45,7 +45,7 @@ data "archive_file" "zip_frontend_canary_lambda" {
 resource "aws_s3_object" "frontend_canary_lambda" {
   bucket = aws_s3_bucket.frontend_canary_s3_bucket.id
   key    = "forgot_password.zip"
-  source = "${data.archive_file.t.output_path}"
+  source = data.archive_file.t.output_path
   etag   = filemd5(data.archive_file.t.output_path)
   depends_on = [
     data.archive_file.zip_frontend_canary_lambda
