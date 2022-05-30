@@ -4,6 +4,7 @@ import boto3
 aws_region = os.environ['CHOOSEN_AWS_REGION']
 aws_access_key_id = os.environ['AWS_ACCESS_KEY_ID']
 aws_secret_access_key = os.environ['AWS_SECRET_ACCESS_KEY']
+application_type = os.environ['APPLICATION_TYPE']
 start_synthetic_monitor = os.environ['START_SYNTHETIC_MONITOR']
 
 
@@ -15,7 +16,9 @@ client = boto3.client('synthetics',
                       region_name=aws_region)
 
 
-synthetic_monitor_name = 'frontend_canary'
+synthetic_monitor_name = f'{application_type}_canary'
+print(f"synthetic_monitor_name:{synthetic_monitor_name}")
+
 print(f"start_synthetic_monitor:{start_synthetic_monitor}")
 if start_synthetic_monitor.lower() == "true":
     print("Starting the synthetic monitor")
