@@ -2,7 +2,7 @@ from aws_synthetics.selenium import synthetics_webdriver as syn_webdriver
 from aws_synthetics.common import synthetics_logger as logger
 import os
 
-def canary_test():
+def main():
     
     url = os.environ['APPLICATION_URL']
     print(f"url:{url}")
@@ -25,4 +25,4 @@ def canary_test():
 def handler(event, context):
     # user defined log statements using synthetics_logger
     logger.info("Selenium Python heartbeat canary")
-    return canary_test()
+    return main()

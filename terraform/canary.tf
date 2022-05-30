@@ -56,7 +56,7 @@ resource "aws_synthetics_canary" "frontend_canary" {
   name                 = "frontend_canary"
   artifact_s3_location = "s3://${aws_s3_bucket.frontend_canary_s3_bucket.id}"
   execution_role_arn   = aws_iam_role.frontend-canary-role.arn
-  runtime_version      = "syn-python-selenium-1.0"
+  runtime_version      = "syn-python-selenium-1.3"
   handler              = "canary_test.handler"
   s3_bucket            = aws_s3_bucket.frontend_canary_s3_bucket.id
   s3_key               = "canary_test.zip"
