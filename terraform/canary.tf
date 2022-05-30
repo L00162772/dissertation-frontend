@@ -37,8 +37,8 @@ resource "aws_s3_bucket_public_access_block" "frontend_canary_s3_access_control"
 # Zip the Lamda function on the fly
 data "archive_file" "zip_frontend_synthetic_monitor" {
   type        = "zip"
-  source_dir  = "./canaryScripts"
-  output_path = "./canaryScriptsOutput/synthetic_monitor.zip"
+  source_dir  = "./syntheticMonitorScripts"
+  output_path = "./syntheticMonitorScriptsOutput/synthetic_monitor.zip"
 }
 
 # Upload canary test file to S3
@@ -127,15 +127,6 @@ resource "aws_iam_role_policy_attachment" "frontend-canary-policy-attachment" {
   policy_arn = aws_iam_policy.frontend-canary-policy.arn
 }
 
-resource "aws_sns_topic" "frontend-canary-sns-topic" {
-  name = "frontend-canary-sns-topic"
-}
-resource "aws_sns_topic_subscription" "frontend-canary-sns-topic-subscription" {
-  topic_arn = aws_sns_topic.frontend-canary-sns-topic.arn
-  protocol  = "email"
-  endpoint  = var.canary_sns_topic_email_subscription
-}
-
 resource "aws_cloudwatch_event_rule" "frontend-canary-failed-event-rule" {
   name = "${var.aws_region}-frontend-canary-event-rule"
   event_pattern = jsonencode({
@@ -150,7 +141,7 @@ resource "aws_cloudwatch_event_rule" "frontend-canary-failed-event-rule" {
 
 resource "aws_cloudwatch_event_target" "frontend-canary-failed-event-target" {
   target_id = "${var.aws_region}-FrontendCanaryFailed"
-  arn       = aws_sns_topic.frontend-canary-sns-topic.arn
+  arn       = aws_lambda_function.terraform_lambda_func
   rule      = aws_cloudwatch_event_rule.frontend-canary-failed-event-rule.name
 }
 
