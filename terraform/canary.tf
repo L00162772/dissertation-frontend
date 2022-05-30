@@ -39,58 +39,58 @@ resource "aws_s3_bucket_public_access_block" "frontend_canary_s3_access_control"
 resource "aws_s3_bucket_object" "frontenf_canary_lambda" {
   bucket = aws_s3_bucket.frontend_canary_s3_bucket.id
   key    = "forgot_password.py"
-  acl    = "private"  
+  acl    = "private"
   source = "canaries/forgot_password.py"
-  etag = filemd5("canaries/forgot_password.py")
+  etag   = filemd5("canaries/forgot_password.py")
 }
 
 
 resource "aws_synthetics_canary" "frontend_canary" {
   name                 = "frontend_canary"
   artifact_s3_location = "s3://${aws_s3_bucket.frontend_canary_s3_bucket.id}"
-  execution_role_arn = data.aws_iam_role.frontend-canary-role.arn
-  runtime_version = "syn-python-selenium-1.0"
-  handler = "forgot_password.handler"
-  s3_bucket = aws_s3_bucket.frontend_canary_s3_bucket.id
-  s3_key = forgot_password.py
-  start_canary = true
+  execution_role_arn   = data.aws_iam_role.frontend-canary-role.arn
+  runtime_version      = "syn-python-selenium-1.0"
+  handler              = "forgot_password.handler"
+  s3_bucket            = aws_s3_bucket.frontend_canary_s3_bucket.id
+  s3_key               = forgot_password.py
+  start_canary         = true
 
   success_retention_period = 2
   failure_retention_period = 14
 
   schedule {
-    expression = "rate(1 minute)"
+    expression          = "rate(1 minute)"
     duration_in_seconds = 0
   }
 
   run_config {
     timeout_in_seconds = 300
-    memory_in_mb = 960
-    active_tracing = false
+    memory_in_mb       = 960
+    active_tracing     = false
   }
 }
 
 data "aws_iam_policy_document" "frontend-canary-assume-role-policy" {
   statement {
     actions = ["sts:AssumeRole"]
-    effect = "Allow"
+    effect  = "Allow"
 
     principals {
       identifiers = ["lambda.amazonaws.com"]
-      type = "Service"
+      type        = "Service"
     }
   }
 }
 
 resource "aws_iam_role" "frontend-canary-role" {
-  name = "frontend-canary-role"
+  name               = "frontend-canary-role"
   assume_role_policy = data.aws_iam_policy_document.frontend-canary-assume-role-policy.json
-  description = "IAM role for AWS Synthetic Monitoring Frontend Canaries"
+  description        = "IAM role for AWS Synthetic Monitoring Frontend Canaries"
 }
 
 data "aws_iam_policy_document" "frontend-canary-policy" {
   statement {
-    sid = "CanaryGeneric"
+    sid    = "CanaryGeneric"
     effect = "Allow"
     actions = [
       "s3:PutObject",
@@ -106,6 +106,6 @@ data "aws_iam_policy_document" "frontend-canary-policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "frontend-canary-policy-attachment" {
-  role = aws_iam_role.frontend-canary-role.name
+  role       = aws_iam_role.frontend-canary-role.name
   policy_arn = aws_iam_policy.frontend-canary-policy.arn
 }
