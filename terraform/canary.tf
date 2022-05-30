@@ -34,15 +34,23 @@ resource "aws_s3_bucket_public_access_block" "frontend_canary_s3_access_control"
   ignore_public_acls = true
 }
 
+# Zip the Lamda function on the fly
+data "archive_file" "zip_frontend_canary_lambda" {
+  type        = "zip"
+  source_dir  = "canaries/forgot_password.py"
+  output_path = "canaries/forgot_password.zip"
+}
 
 # Upload canary file to S3
 resource "aws_s3_object" "frontend_canary_lambda" {
   bucket = aws_s3_bucket.frontend_canary_s3_bucket.id
-  key    = "forgot_password.py"
-  source = "canaries/forgot_password.py"
-  etag   = filemd5("canaries/forgot_password.py")
+  key    = "forgot_password.zip"
+  source = "canaries/forgot_password.zip"
+  etag   = filemd5("canaries/forgot_password.zip")
+  depends_on = [
+    archive_file.zip_frontend_canary_lambda
+  ]
 }
-
 
 resource "aws_synthetics_canary" "frontend_canary" {
   name                 = "frontend_canary"
@@ -51,7 +59,7 @@ resource "aws_synthetics_canary" "frontend_canary" {
   runtime_version      = "syn-python-selenium-1.0"
   handler              = "forgot_password.handler"
   s3_bucket            = aws_s3_bucket.frontend_canary_s3_bucket.id
-  s3_key               = "forgot_password.py"
+  s3_key               = "forgot_password.zip"
   start_canary         = true
 
   success_retention_period = 2
@@ -67,6 +75,9 @@ resource "aws_synthetics_canary" "frontend_canary" {
     memory_in_mb       = 960
     active_tracing     = false
   }
+  depends_on = [
+    aws_s3_object.frontend_canary_lambda
+  ]
 }
 
 data "aws_iam_policy_document" "frontend-canary-assume-role-policy" {
