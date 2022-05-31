@@ -11,3 +11,4 @@ def lambda_handler(event, context):
         print("Test failed - remove region from global accelerator")
     else:
         print("Test Passed - verify region is part of global accelerator")
+ 

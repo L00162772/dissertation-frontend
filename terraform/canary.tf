@@ -210,12 +210,13 @@ resource "aws_s3_object" "frontend_canary_lambda" {
 }
 
 resource "aws_lambda_function" "terraform_lambda_func" {
-  s3_bucket     = aws_s3_bucket.frontend_canary_s3_bucket.id
-  s3_key        = "canary_lambda.zip"
-  function_name = "canary_lambda"
-  role          = aws_iam_role.canary_lambda_role.arn
-  handler       = "canary_lambda.lambda_handler"
-  runtime       = "python3.9"
+  s3_bucket        = aws_s3_bucket.frontend_canary_s3_bucket.id
+  s3_key           = "canary_lambda.zip"
+  function_name    = "canary_lambda"
+  role             = aws_iam_role.canary_lambda_role.arn
+  handler          = "canary_lambda.lambda_handler"
+  runtime          = "python3.9"
+  source_code_hash = filebase64sha256("canary_lambda.zip")
 
   depends_on = [
     aws_iam_role_policy_attachment.canary_attach_iam_policy_to_iam_role,
