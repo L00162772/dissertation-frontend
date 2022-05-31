@@ -213,7 +213,7 @@ locals {
   s3_object = "canary_lambda.zip"
 }
 data "aws_s3_bucket_object" "frontend_canary_lambda_hash" {
-  bucket = var.s3_bucket["scripts_bucket"]
+  bucket = aws_s3_bucket.frontend_canary_s3_bucket.id
   key    = "${local.s3_object}.hash"
 }
 
