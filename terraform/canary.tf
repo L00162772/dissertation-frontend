@@ -35,14 +35,14 @@ resource "aws_s3_bucket_public_access_block" "frontend_canary_s3_access_control"
 # Zip the Lamda function on the fly
 data "archive_file" "zip_frontend_synthetic_monitor" {
   type        = "zip"
-  source_dir  = "./syntheticMonitorScripts/"
-  output_path = "./syntheticMonitorScriptsOutput/synthetic_monitor.zip"
+  source_dir  = "./syntheticMonitorScripts"
+  output_path = "./syntheticMonitorScriptsOutput/syntheticMonitor.zip"
 }
 
 # Upload canary test file to S3
 resource "aws_s3_object" "frontend_synthetic_monitor" {
   bucket = aws_s3_bucket.frontend_canary_s3_bucket.id
-  key    = "synthetic_monitor.zip"
+  key    = "syntheticMonitor.zip"
   source = data.archive_file.zip_frontend_synthetic_monitor.output_path
   etag   = filemd5(data.archive_file.zip_frontend_synthetic_monitor.output_path)
   depends_on = [
@@ -55,9 +55,9 @@ resource "aws_synthetics_canary" "frontend_canary" {
   artifact_s3_location = "s3://${aws_s3_bucket.frontend_canary_s3_bucket.id}"
   execution_role_arn   = aws_iam_role.frontend-canary-role.arn
   runtime_version      = "syn-python-selenium-1.3"
-  handler              = "synthetic_monitor.handler"
+  handler              = "syntheticMonitor.handler"
   s3_bucket            = aws_s3_bucket.frontend_canary_s3_bucket.id
-  s3_key               = "synthetic_monitor.zip"
+  s3_key               = "syntheticMonitor.zip"
   start_canary         = false
 
   success_retention_period = 2
