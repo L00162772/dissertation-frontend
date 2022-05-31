@@ -39,12 +39,13 @@ data "archive_file" "zip_frontend_synthetic_monitor" {
   output_path = "./syntheticMonitorScriptsOutput/syntheticMonitor.zip"
 }
 
-# Upload canary test file to S3
+# Upload synthetic monitoring test file to S3
 resource "aws_s3_object" "frontend_synthetic_monitor" {
   bucket = aws_s3_bucket.frontend_canary_s3_bucket.id
   key    = "syntheticMonitor.zip"
   source = data.archive_file.zip_frontend_synthetic_monitor.output_path
   etag   = filemd5(data.archive_file.zip_frontend_synthetic_monitor.output_path)
+
   depends_on = [
     data.archive_file.zip_frontend_synthetic_monitor
   ]
@@ -200,23 +201,24 @@ data "archive_file" "zip_frontend_canary_lambda" {
 
 # Upload canary lambda file to S3
 resource "aws_s3_object" "frontend_canary_lambda" {
-  bucket      = aws_s3_bucket.frontend_canary_s3_bucket.id
-  key         = "canary_lambda.zip"
-  source      = data.archive_file.zip_frontend_canary_lambda.output_path
-  source_hash = filemd5(data.archive_file.zip_frontend_canary_lambda.output_path)
+  bucket = aws_s3_bucket.frontend_canary_s3_bucket.id
+  key    = "canary_lambda.zip"
+  source = data.archive_file.zip_frontend_canary_lambda.output_path
+  etag   = filemd5(data.archive_file.zip_frontend_canary_lambda.output_path)
+
   depends_on = [
     data.archive_file.zip_frontend_canary_lambda
   ]
 }
 
-
 resource "aws_lambda_function" "terraform_lambda_func" {
-  s3_bucket     = aws_s3_bucket.frontend_canary_s3_bucket.id
-  s3_key        = "canary_lambda.zip"
-  function_name = "canary_lambda"
-  role          = aws_iam_role.canary_lambda_role.arn
-  handler       = "canary_lambda.lambda_handler"
-  runtime       = "python3.9"
+  s3_bucket        = aws_s3_bucket.frontend_canary_s3_bucket.id
+  s3_key           = "canary_lambda.zip"
+  function_name    = "canary_lambda"
+  role             = aws_iam_role.canary_lambda_role.arn
+  handler          = "canary_lambda.lambda_handler"
+  runtime          = "python3.9"
+  source_code_hash = data.archive_file.zip_frontend_canary_lambda.output_base64sha256
 
   depends_on = [
     aws_iam_role_policy_attachment.canary_attach_iam_policy_to_iam_role,
