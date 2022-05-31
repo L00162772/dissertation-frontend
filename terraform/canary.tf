@@ -52,7 +52,7 @@ resource "aws_s3_object" "synthetic_monitor" {
 }
 
 resource "aws_synthetics_canary" "canary" {
-  name                 = "${var.application_type}-_canary"
+  name                 = "${var.application_type}_canary"
   artifact_s3_location = "s3://${aws_s3_bucket.canary_s3_bucket.id}"
   execution_role_arn   = aws_iam_role.canary-role.arn
   runtime_version      = "syn-python-selenium-1.3"
