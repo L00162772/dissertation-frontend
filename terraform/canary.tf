@@ -184,13 +184,13 @@ resource "aws_iam_policy" "canary_iam_policy_for_lambda" {
    },
    {
      "Action": [
-                "globalaccelerator:ListAccelerators",
-                "globalaccelerator:ListTagsForResource",
-                "globalaccelerator:ListListeners",
-                "globalaccelerator:CreateEndpointGroup",
-                "globalaccelerator:ListEndpointGroups",
-                "globalaccelerator:DeleteEndpointGroup",
-                "elasticloadbalancing:DescribeLoadBalancers"
+        "globalaccelerator:ListAccelerators",
+        "globalaccelerator:ListTagsForResource",
+        "globalaccelerator:ListListeners",
+        "globalaccelerator:CreateEndpointGroup"
+        "globalaccelerator:ListEndpointGroups",
+        "globalaccelerator:DeleteEndpointGroup",
+        "elasticloadbalancing:DescribeLoadBalancers"
      ],
      "Resource": "*",
      "Effect": "Allow"
