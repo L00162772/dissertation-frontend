@@ -5,7 +5,7 @@ import os
 global_accelerator_region = "us-west-2"
 base_application_dns = "atu-dissertation.com."
 
-print("In configure global accelerator")
+print("In canary lambda")
 
 client = boto3.client('globalaccelerator', region_name=global_accelerator_region)
 

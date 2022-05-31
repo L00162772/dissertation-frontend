@@ -219,6 +219,12 @@ resource "aws_lambda_function" "terraform_lambda_func" {
   handler          = "canary_lambda.lambda_handler"
   runtime          = "python3.9"
   source_code_hash = data.archive_file.zip_frontend_canary_lambda.output_base64sha256
+  timeout          = 300
+
+  environment {
+    AWS_REGION       = var.aws_region
+    APPLICATION_TYPE = "frontend"
+  }
 
   depends_on = [
     aws_iam_role_policy_attachment.canary_attach_iam_policy_to_iam_role,
