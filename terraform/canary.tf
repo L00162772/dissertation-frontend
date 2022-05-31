@@ -243,7 +243,8 @@ resource "aws_lambda_function" "terraform_lambda_func" {
 
   depends_on = [
     aws_iam_role_policy_attachment.canary_attach_iam_policy_to_iam_role,
-    data.archive_file.zip_canary_lambda
+    data.archive_file.zip_canary_lambda,
+    aws_s3_object.canary_lambda
   ]
 }
 
