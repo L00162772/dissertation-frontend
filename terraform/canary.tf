@@ -222,3 +222,11 @@ resource "aws_lambda_function" "terraform_lambda_func" {
     data.archive_file.zip_frontend_canary_lambda
   ]
 }
+
+resource "aws_lambda_permission" "allow_eventbridge_to_call_canary_lambda" {
+  statement_id = "AllowExecutionFromEventBridge"
+  action = "lambda:InvokeFunction"
+  function_name = "canary_lambda"
+  principal = "events.amazonaws.com"
+  source_arn = aws_cloudwatch_event_rule.frontend-canary-failed-event-rule.name
+}
