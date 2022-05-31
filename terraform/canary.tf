@@ -222,8 +222,10 @@ resource "aws_lambda_function" "terraform_lambda_func" {
   timeout          = 300
 
   environment {
-    AWS_REGION       = var.aws_region
-    APPLICATION_TYPE = "frontend"
+    variables = {
+      AWS_REGION       = var.aws_region
+      APPLICATION_TYPE = "frontend"
+    }
   }
 
   depends_on = [
