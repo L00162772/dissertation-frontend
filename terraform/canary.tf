@@ -227,7 +227,7 @@ resource "aws_s3_object" "canary_lambda" {
 resource "aws_lambda_function" "terraform_lambda_func" {
   s3_bucket        = aws_s3_bucket.canary_s3_bucket.id
   s3_key           = "canary_lambda.zip"
-  function_name    = "canary_lambda"
+  function_name    = "${var.application_type}_canary_lambda"
   role             = aws_iam_role.canary_lambda_role.arn
   handler          = "canary_lambda.lambda_handler"
   runtime          = "python3.9"
