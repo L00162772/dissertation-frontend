@@ -35,7 +35,7 @@ def lambda_handler(event, context):
     else:
         print("Test Passed - verify region is part of global accelerator")
         _add_region_to_global_accelerator(listener_arn)
- 
+  
 def _get_listener_arn(accelerator_arn) -> str:
     list_listeners_response = client.list_listeners( AcceleratorArn=accelerator_arn)
     print(f"list_listeners_response: {list_listeners_response}")
