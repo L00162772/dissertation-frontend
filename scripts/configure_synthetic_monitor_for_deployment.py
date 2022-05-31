@@ -22,17 +22,22 @@ print(f"synthetic_monitor_name:{synthetic_monitor_name}")
 get_canary_response = client.get_canary(Name=synthetic_monitor_name)
 print(f"get_canary_response:{get_canary_response}")
 
-canary_state = get_canary_response['Canary']['Status']['State']
-print(f"canary_state:{canary_state}")
+canary_state = None
+try:
+    canary_state = get_canary_response['Canary']['Status']['State']
+    print(f"canary_state:{canary_state}")
+except Exception as e:
+    print(f"An exception has occured - perhaps canary does not exist. Exception: {e}")
 
-print(f"start_synthetic_monitor:{start_synthetic_monitor}")
-if start_synthetic_monitor.lower() == "true":
-    if canary_state == 'STOPPED' or canary_state == 'READY':
-        print("Starting the synthetic monitor")
-        start_canary_response = client.start_canary(Name=synthetic_monitor_name)
-        print(f"start_canary_response:{start_canary_response}")
-else:
-    if canary_state == 'RUNNING':
-        print("Stopping the synthetic monitor")
-        stop_canary_response = client.stop_canary(Name=synthetic_monitor_name)
-        print(f"stop_canary_response:{stop_canary_response}")
+if canary_state is not None:
+    print(f"start_synthetic_monitor:{start_synthetic_monitor}")
+    if start_synthetic_monitor.lower() == "true":
+        if canary_state == 'STOPPED' or canary_state == 'READY':
+            print("Starting the synthetic monitor")
+            start_canary_response = client.start_canary(Name=synthetic_monitor_name)
+            print(f"start_canary_response:{start_canary_response}")
+    else:
+        if canary_state == 'RUNNING':
+            print("Stopping the synthetic monitor")
+            stop_canary_response = client.stop_canary(Name=synthetic_monitor_name)
+            print(f"stop_canary_response:{stop_canary_response}")
