@@ -18,7 +18,7 @@ export default function Update() {
     }, []);
 
     const updateAPIData = () => {
-        axios.put(`https://627c358fe5ac2c452aed2ad9.mockapi.io/fakeData/${id}`, {
+        axios.put(`http://backend.atu-dissertation.com/users/${id}`, {
             firstName,
             lastName,
             checkbox

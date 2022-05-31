@@ -10,7 +10,7 @@ export default function Create() {
     const [checkbox, setCheckbox] = useState(false);
 
     const postData = () => {
-        axios.post(`https://627c358fe5ac2c452aed2ad9.mockapi.io/fakeData`, {
+        axios.post(`http://backend.atu-dissertation.com/users`, {
             firstName,
             lastName,
             checkbox
