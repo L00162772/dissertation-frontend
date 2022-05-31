@@ -3,6 +3,11 @@ variable "aws_region" {
   default = "###AWS_REGION###"
 }
 
+variable "application_type" {
+  type    = string
+  default = "frontend"
+}
+
 variable "bucket_name_postfix" {
   default     = "l00162772-frontend"
   description = "The name of the bucket for the frontend code"

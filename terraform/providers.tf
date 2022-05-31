@@ -26,7 +26,7 @@ provider "aws" {
   default_tags {
     tags = {
       Region = var.aws_region
-      Name   = "frontend"
+      Name   = var.application_type
     }
   }
 }
@@ -36,8 +36,8 @@ provider "aws" {
   #profile = "lyit"
 }
 locals {
-  cloudfront_domain = "${var.aws_region}-cloudfront-frontend.${var.route53_domain}"
-  alb_domain        = "${var.aws_region}-alb-frontend.${var.route53_domain}"
-  frontend_domain   = "frontend.${var.route53_domain}"
-  s3_origin_id      = "${var.aws_region}-frontend-s3-origin"
+  cloudfront_domain = "${var.aws_region}-cloudfront-${var.application_type}.${var.route53_domain}"
+  alb_domain        = "${var.aws_region}-alb-${var.application_type}.${var.route53_domain}"
+  top_level_domain  = "${var.application_type}.${var.route53_domain}"
+  s3_origin_id      = "${var.aws_region}-${var.application_type}-s3-origin"
 }

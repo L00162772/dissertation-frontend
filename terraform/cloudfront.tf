@@ -15,10 +15,10 @@ resource "aws_iam_policy" "cloudfront-invalidate-paths" {
 }
 
 
-resource "aws_cloudfront_distribution" "frontend_cloudfront_distribution" {
+resource "aws_cloudfront_distribution" "cloudfront_distribution" {
   enabled             = true
   is_ipv6_enabled     = true
-  comment             = "The cloudfront distribution for the ${var.aws_region} frontend deployment"
+  comment             = "The cloudfront distribution for the ${var.aws_region} ${var.application_type} deployment"
   default_root_object = "index.html"
   aliases             = [local.cloudfront_domain]
   default_cache_behavior {
@@ -34,7 +34,7 @@ resource "aws_cloudfront_distribution" "frontend_cloudfront_distribution" {
     }
   }
   origin {
-    domain_name = aws_s3_bucket.frontend_s3_bucket.bucket_regional_domain_name
+    domain_name = aws_s3_bucket.s3_bucket.bucket_regional_domain_name
     origin_id   = local.s3_origin_id
   }
   restrictions {
@@ -43,7 +43,7 @@ resource "aws_cloudfront_distribution" "frontend_cloudfront_distribution" {
     }
   }
   viewer_certificate {
-    acm_certificate_arn = aws_acm_certificate.frontend_cloudfront_cert.arn
+    acm_certificate_arn = aws_acm_certificate.cloudfront_cert.arn
     ssl_support_method  = "sni-only"
   }
   custom_error_response {

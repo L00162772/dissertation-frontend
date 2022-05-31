@@ -14,16 +14,16 @@ module "lb_security_group" {
 }
 
 
-resource "aws_lb" "frontend_alb" {
-  name               = "frontend-alb"
+resource "aws_lb" "alb" {
+  name               = "${var.application_type}-alb"
   internal           = false
   load_balancer_type = "application"
   subnets            = module.vpc.public_subnets
   security_groups    = [module.lb_security_group.security_group_id]
 }
 
-resource "aws_lb_listener" "frontend_alb_http" {
-  load_balancer_arn = aws_lb.frontend_alb.arn
+resource "aws_lb_listener" "alb_http" {
+  load_balancer_arn = aws_lb.alb.arn
   port              = "80"
   protocol          = "HTTP"
 
@@ -37,12 +37,12 @@ resource "aws_lb_listener" "frontend_alb_http" {
   }
 }
 
-# resource "aws_lb_listener" "frontend_alb_https" {
-#   load_balancer_arn = aws_lb.frontend_alb.arn
+# resource "aws_lb_listener" "alb_https" {
+#   load_balancer_arn = aws_lb.alb.arn
 #   port              = "443"
 #   protocol          = "HTTPS"
 #   ssl_policy        = "ELBSecurityPolicy-2016-08"
-#   certificate_arn   = aws_acm_certificate.frontend_alb_cert.arn
+#   certificate_arn   = aws_acm_certificate.alb_cert.arn
 
 #   default_action {
 #     type = "redirect"
@@ -54,6 +54,6 @@ resource "aws_lb_listener" "frontend_alb_http" {
 #   }
 
 #   depends_on = [
-#     aws_acm_certificate.frontend_alb_cert
+#     aws_acm_certificate.alb_cert
 #   ]
 # }
