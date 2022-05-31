@@ -131,7 +131,7 @@ resource "aws_cloudwatch_event_rule" "frontend-canary-failed-event-rule" {
     source = ["aws.synthetics"]
     detail = {
       "canary-name" : [aws_synthetics_canary.frontend_canary.name],
-      "test-run-status" : ["FAILED", "SUCCESS"]
+      "test-run-status" : ["FAILED", "PASSED"]
     }
   })
 }
