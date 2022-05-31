@@ -131,7 +131,7 @@ resource "aws_cloudwatch_event_rule" "frontend-canary-failed-event-rule" {
     source = ["aws.synthetics"]
     detail = {
       "canary-name" : [aws_synthetics_canary.frontend_canary.name],
-      "test-run-status" : ["FAILED"]
+      "test-run-status" : ["FAILED", "SUCCESS"]
     }
   })
 }
@@ -224,9 +224,9 @@ resource "aws_lambda_function" "terraform_lambda_func" {
 }
 
 resource "aws_lambda_permission" "allow_eventbridge_to_call_canary_lambda" {
-  statement_id = "AllowExecutionFromEventBridge"
-  action = "lambda:InvokeFunction"
+  statement_id  = "AllowExecutionFromEventBridge"
+  action        = "lambda:InvokeFunction"
   function_name = "canary_lambda"
-  principal = "events.amazonaws.com"
-  source_arn = aws_cloudwatch_event_rule.frontend-canary-failed-event-rule.name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.frontend-canary-failed-event-rule.name
 }
