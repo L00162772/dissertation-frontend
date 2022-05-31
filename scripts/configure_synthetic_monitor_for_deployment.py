@@ -26,8 +26,8 @@ canary_state = None
 try:
     canary_state = get_canary_response['Canary']['Status']['State']
     print(f"canary_state:{canary_state}")
-except Exception as e:
-    print(f"An exception has occured - perhaps canary does not exist. Exception: {e}")
+except:
+    print("An exception has occured - perhaps canary does not exist.")
 
 if canary_state is not None:
     print(f"start_synthetic_monitor:{start_synthetic_monitor}")
