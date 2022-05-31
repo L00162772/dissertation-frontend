@@ -223,7 +223,7 @@ resource "aws_lambda_function" "terraform_lambda_func" {
 
   environment {
     variables = {
-      AWS_REGION       = var.aws_region
+      REGION           = var.aws_region
       APPLICATION_TYPE = "frontend"
     }
   }
