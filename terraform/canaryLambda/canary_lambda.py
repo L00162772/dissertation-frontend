@@ -94,24 +94,40 @@ def _delete_region_from_global_accelerator(listener_arn):
 def _add_region_to_global_accelerator(listener_arn):
     load_balancer_arn = _get_load_balancer_arn()
     print(f"load_balancer_arn: {load_balancer_arn}")
-    create_endpoint_group_response = client.create_endpoint_group(
-        ListenerArn=listener_arn,
-        EndpointGroupRegion=aws_region,
-        EndpointConfigurations=[
-            {
-                'EndpointId': load_balancer_arn,
-                'Weight': 123,
-                'ClientIPPreservationEnabled': False
-            },
-        ],
-        HealthCheckPort=80,
-        HealthCheckProtocol='HTTP',
-        HealthCheckPath='/index.html',
-        HealthCheckIntervalSeconds=10,
-        ThresholdCount=3,
-        IdempotencyToken='string',
-    )
-    print(f"create_endpoint_group_response:{create_endpoint_group_response}")            
+
+    already_has_listener_for_region = False
+    list_endpoint_groups_response = client.list_endpoint_groups(ListenerArn=listener_arn)
+    print(f"list_endpoint_groups_response:{list_endpoint_groups_response}")
+    for endpoint_group in list_endpoint_groups_response['EndpointGroups']:
+        print(f"endpoint_group:{endpoint_group}")
+        endpoint_group_region = endpoint_group['EndpointGroupRegion']
+        print(f"endpoint_group_region:'{endpoint_group_region}', aws_region:'{aws_region}'")
+        if endpoint_group_region.lower() == aws_region.lower():
+            already_has_listener_for_region = True
+
+
+    if not already_has_listener_for_region:
+        print("Creating listener - no listener exists for this region")
+        create_endpoint_group_response = client.create_endpoint_group(
+            ListenerArn=listener_arn,
+            EndpointGroupRegion=aws_region,
+            EndpointConfigurations=[
+                {
+                    'EndpointId': load_balancer_arn,
+                    'Weight': 123,
+                    'ClientIPPreservationEnabled': False
+                },
+            ],
+            HealthCheckPort=80,
+            HealthCheckProtocol='HTTP',
+            HealthCheckPath='/index.html',
+            HealthCheckIntervalSeconds=10,
+            ThresholdCount=3,
+            IdempotencyToken='string',
+        )
+        print(f"create_endpoint_group_response:{create_endpoint_group_response}")            
+    else:
+        print("Not Creating listener as it already exists")
 
 def _get_load_balancer_arn():
     describe_load_balancers_response = elbv2_client.describe_load_balancers()
