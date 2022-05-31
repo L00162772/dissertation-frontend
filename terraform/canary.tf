@@ -251,7 +251,7 @@ resource "aws_lambda_function" "terraform_lambda_func" {
 resource "aws_lambda_permission" "allow_eventbridge_to_call_canary_lambda" {
   statement_id  = "AllowExecutionFromEventBridge"
   action        = "lambda:InvokeFunction"
-  function_name = "canary_lambda"
+  function_name = "${var.application_type}_canary_lambda"
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.canary-failed-event-rule.arn
 }
