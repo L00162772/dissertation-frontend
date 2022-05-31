@@ -182,6 +182,15 @@ resource "aws_iam_policy" "canary_iam_policy_for_lambda" {
      "Resource": "arn:aws:logs:*:*:*",
      "Effect": "Allow"
    }
+ ],
+ [
+   {
+     "Action": [
+       "globalaccelerator:ListAccelerators"
+     ],
+     "Resource": "*",
+     "Effect": "Allow"
+   }
  ]
 }
 EOF

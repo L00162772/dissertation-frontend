@@ -9,7 +9,7 @@ print("In canary lambda")
 
 client = boto3.client('globalaccelerator', region_name=global_accelerator_region)
 
-aws_region = os.environ['AWS_REGION']
+aws_region = os.environ['REGION']
 application_type = os.environ['APPLICATION_TYPE']
 elbv2_client = boto3.client('elbv2',  region_name=aws_region)
 
