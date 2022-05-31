@@ -20,11 +20,11 @@ client = boto3.client('synthetics',
 synthetic_monitor_name = f'{application_type}_canary'
 print(f"synthetic_monitor_name:{synthetic_monitor_name}")
 
-get_canary_response = client.get_canary(Name=synthetic_monitor_name)
-print(f"get_canary_response:{get_canary_response}")
-
 canary_state = None
 try:
+    get_canary_response = client.get_canary(Name=synthetic_monitor_name)
+    print(f"get_canary_response:{get_canary_response}")
+
     canary_state = get_canary_response['Canary']['Status']['State']
     print(f"canary_state:{canary_state}")
 except botocore.errorfactory.ResourceNotFoundException as e:
