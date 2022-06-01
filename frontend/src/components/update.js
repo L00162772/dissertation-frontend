@@ -18,7 +18,7 @@ export default function Update() {
     }, []);
 
     const updateAPIData = () => {
-        axios.put(`http://backend.atu-dissertation.com/users/${id}`, {
+        axios.put(`https://backend.atu-dissertation.com/users/${id}`, {
             firstName,
             lastName,
             checkbox
