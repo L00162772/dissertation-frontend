@@ -9,6 +9,7 @@ application_type = os.environ['APPLICATION_TYPE']
 global_accelerator_region = "us-west-2"
 base_route53_region = "us-east-1"
 base_application_dns = "atu-dissertation.com."
+global_Accelerator_hosted_zone_id = 'Z2BJ6XQ5FK7U4H'
 
 print("In destroy route53")
 
@@ -86,7 +87,7 @@ for accelerator in list_accelerators_response['Accelerators']:
                         'SetIdentifier': 'Simple',
                         'Region': 'us-east-1',
                         'AliasTarget': {
-                            'HostedZoneId': 'Z2BJ6XQ5FK7U4H',
+                            'HostedZoneId': global_Accelerator_hosted_zone_id,
                             'DNSName': global_accelerator_dns_name,
                             'EvaluateTargetHealth': True
                         }
