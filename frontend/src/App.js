@@ -26,6 +26,7 @@ try {
     APPLICATION_REGION,
     config
   );
+  console.log(awsRum)
 } catch (error) {
   console.log("An error has occured")
   console.log(error)
