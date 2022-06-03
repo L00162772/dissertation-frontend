@@ -21,11 +21,7 @@ export default function Create() {
     }
     return (
         <div> 
-            <Form className="create-form">
-            <Form.Field>
-                    <label>Phone Number</label>
-                    <input type="text" placeholder='First Name' data-testid="phoneNumber" onChange={(e) => setPhoneNumber(e.target.value)}/>
-                </Form.Field>                
+            <Form className="create-form">           
                 <Form.Field>
                     <label>First Name</label>
                     <input type="text" placeholder='First Name' data-testid="firstName" onChange={(e) => setFirstName(e.target.value)}/>
@@ -34,6 +30,10 @@ export default function Create() {
                     <label>Last Name</label>
                     <input type="text" placeholder='Last Name' data-testid="lastName" onChange={(e) => setLastName(e.target.value)}/>
                 </Form.Field>
+                <Form.Field>
+                    <label>Phone Number</label>
+                    <input type="text" placeholder='Phone Number' data-testid="phoneNumber" onChange={(e) => setPhoneNumber(e.target.value)}/>
+                </Form.Field>                     
                 <Button onClick={postData} data-testid="submit" type='submit'>Submit</Button>
             </Form>
         </div>

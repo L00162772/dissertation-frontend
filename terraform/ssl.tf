@@ -1,6 +1,5 @@
 # Note SSL certs can only be created in this region
 resource "aws_acm_certificate" "cloudfront_cert" {
-  provider          = aws.east1
   domain_name       = local.cloudfront_domain
   validation_method = "DNS"
   lifecycle {
