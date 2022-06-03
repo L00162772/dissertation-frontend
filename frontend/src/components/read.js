@@ -16,11 +16,10 @@ export default function Read() {
     }, []);
 
     const setData = (data) => {
-        let { id, firstName, lastName, checkbox } = data;
-        localStorage.setItem('ID', id);
+        let { firstName, lastName, phoneNumber } = data;
         localStorage.setItem('First Name', firstName);
         localStorage.setItem('Last Name', lastName);
-        localStorage.setItem('Checkbox Value', checkbox)
+        localStorage.setItem('Phone Number', phoneNumber)
         navigate('/update')
     }
 
@@ -45,7 +44,7 @@ export default function Read() {
                     <Table.Row>
                         <Table.HeaderCell>First Name</Table.HeaderCell>
                         <Table.HeaderCell>Last Name</Table.HeaderCell>
-                        <Table.HeaderCell>Checkbox Value</Table.HeaderCell>
+                        <Table.HeaderCell>Phone Number</Table.HeaderCell>
                         <Table.HeaderCell>Update</Table.HeaderCell>
                         <Table.HeaderCell>Delete</Table.HeaderCell>
                     </Table.Row>
@@ -57,7 +56,7 @@ export default function Read() {
                             <Table.Row key={data.id}>
                                 <Table.Cell>{data.firstName}</Table.Cell>
                                 <Table.Cell>{data.lastName}</Table.Cell>
-                                <Table.Cell>{data.checkbox ? 'Checked' : 'Unchecked'}</Table.Cell>
+                                <Table.Cell>{data.phoneNumber}</Table.Cell>
                                     <Table.Cell> 
                                         <Button onClick={() => setData(data)}>Update</Button>
                                     </Table.Cell>

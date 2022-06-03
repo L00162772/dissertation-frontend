@@ -1,27 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Checkbox, Form } from 'semantic-ui-react'
+import { Button, Form } from 'semantic-ui-react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 export default function Update() {
     let navigate = useNavigate();
-    const [id, setID] = useState(null);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [checkbox, setCheckbox] = useState(false);
+    const [phoneNumber, setPhoneNumber] = useState(false);
 
     useEffect(() => {
-        setID(localStorage.getItem('ID'))
         setFirstName(localStorage.getItem('First Name'));
         setLastName(localStorage.getItem('Last Name'));
-        setCheckbox(localStorage.getItem('Checkbox Value'));
+        setPhoneNumber(localStorage.getItem('Phone Number'));
     }, []);
 
     const updateAPIData = () => {
-        axios.put(`https://backend.atu-dissertation.com/users/${id}`, {
+        axios.put(`https://backend.atu-dissertation.com/users/${phoneNumber}`, {
             firstName,
             lastName,
-            checkbox
+            phoneNumber
         }).then(() => {
             navigate('/read')
         })
@@ -38,7 +36,8 @@ export default function Update() {
                     <input placeholder='Last Name' type="text" data-testid="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)}/>
                 </Form.Field>
                 <Form.Field>
-                    <Checkbox label='I agree to the Terms and Conditions' data-testid="terms" checked={checkbox} onChange={() => setCheckbox(!checkbox)}/>
+                    <label>Phone Number</label>
+                    <input placeholder='Phone Number' type="text" data-testid="phoneNumber" value={lastName} onChange={(e) => setPhoneNumber(e.target.value)}/>
                 </Form.Field>
                 <Button type='submit' data-testid="update" onClick={updateAPIData}>Update</Button>
             </Form>

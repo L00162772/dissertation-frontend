@@ -69,26 +69,13 @@ describe('<Create /> with no props', () => {
     expect(input.value).toBe('last name')
   });
 
-  it('should have terms field', () => {
+  it('should have phoneNumber field', () => {
     render(<Router><Create /></Router>);
-    const input = screen.getByTestId('terms')
-    expect(input).toBeInTheDocument()
-    const checkboxLabel = input.children[1]
-    expect(checkboxLabel).toHaveTextContent("I agree to the Terms and Conditions")
+    const input = screen.getByTestId('phoneNumber')
+    fireEvent.change(input, {target: {value: 'phone number'}})
+    expect(input.value).toBe('phone number')
   });
  
-  it('should accept changes to terms checkbox', () => {
-    render(<Router><Create /></Router>);
-    const input= screen.getByTestId('terms')
-
-    const checkboxInput = input.children[0]
-    fireEvent.click(checkboxInput)
-    expect(input).toHaveAttribute('class',  'ui checked checkbox')
-
-    fireEvent.click(checkboxInput)
-    expect(input).toHaveAttribute('class',  'ui checkbox')
-  });
-
   it('should have submit button', () => {
     render(<Router><Create /></Router>);
     const button = screen.getByTestId('submit')

@@ -24,7 +24,7 @@ afterEach(() => {
             id: 1,
             firstName: 'First Name',
             lastName: 'Last Name',
-            checkbox: 'Checked'
+            phoneNumber: '123456789'
           },
         ]
       }
