@@ -11,7 +11,8 @@ export default function Read() {
         axios.get(`https://backend.atu-dissertation.com/users`)
             .then((response) => {
                 console.log(response.data)
-                setAPIData(response.data);
+                console.log(response.data.Items)
+                setAPIData(response.data.Items);
             })
     }, []);
 
@@ -24,14 +25,15 @@ export default function Read() {
     }
 
     const getData = () => {
+        console.group("Her e1")
         axios.get(`https://backend.atu-dissertation.com/users`)
             .then((getData) => {
                 setAPIData(getData.data);
             })
     }
 
-    const onDelete = (id) => {
-        axios.delete(`https://backend.atu-dissertation.com/users/${id}`)
+    const onDelete = (phoneNumber) => {
+        axios.delete(`https://backend.atu-dissertation.com/users/${phoneNumber}`)
         .then(() => {
             getData();
         })
@@ -61,7 +63,7 @@ export default function Read() {
                                         <Button onClick={() => setData(data)}>Update</Button>
                                     </Table.Cell>
                                 <Table.Cell>
-                                    <Button onClick={() => onDelete(data.id)}>Delete</Button>
+                                    <Button onClick={() => onDelete(data.phoneNumber)}>Delete</Button>
                                 </Table.Cell>
                             </Table.Row>
                         )
