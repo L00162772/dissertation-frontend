@@ -2,7 +2,6 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Table, Button } from 'semantic-ui-react';
 import { useNavigate } from 'react-router-dom';
-import { useHistory } from 'react-router-dom'
 
 export default function Read() {
     let navigate = useNavigate();
