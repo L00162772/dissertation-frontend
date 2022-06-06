@@ -1,6 +1,7 @@
 # Note SSL certs can only be created in this region
 resource "aws_acm_certificate" "cloudfront_cert" {
   domain_name       = local.cloudfront_domain
+  provider                = aws.east1
   validation_method = "DNS"
   lifecycle {
     create_before_destroy = true
@@ -11,6 +12,7 @@ resource "aws_acm_certificate" "cloudfront_cert" {
 
 resource "aws_acm_certificate_validation" "cloudfront_cert_validation" {
   certificate_arn         = aws_acm_certificate.cloudfront_cert.arn
+  provider                = aws.east1
   validation_record_fqdns = [for record in aws_route53_record.cloudfront_route53_validation_record : record.fqdn]
   depends_on = [
     aws_route53_record.cloudfront_route53_validation_record
