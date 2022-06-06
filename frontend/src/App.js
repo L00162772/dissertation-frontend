@@ -4,6 +4,7 @@ import Read from './components/read';
 import Update from './components/update';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { AwsRum } from 'aws-rum-web';
+import { Link} from 'react-router-dom'
 
 try {
   const config = {
@@ -38,6 +39,8 @@ function App() {
     <Router>
       <div className="main">
         <h2 className="main-header">React User Tracking</h2>
+        <Link to={"./create"}>Create User</Link>  
+        <Link to={"./read"}>List Users</Link>
         <div>
         <Routes>
           <Route exact path='/create' element={<Create />} />

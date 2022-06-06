@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Table, Button } from 'semantic-ui-react';
 import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom'
 
 export default function Read() {
     let navigate = useNavigate();
@@ -26,10 +27,12 @@ export default function Read() {
     }
 
     const getData = () => {
-        console.group("Here 1")
         axios.get(`https://backend.atu-dissertation.com/users`)
             .then((getData) => {
-                setAPIData(getData.data);
+                console.log("here 2")
+                console.log(getData)
+                console.log(getData.data)
+                setAPIData(getData.data.Items);
             })
     }
 
@@ -37,6 +40,7 @@ export default function Read() {
         axios.delete(`https://backend.atu-dissertation.com/users/${id}`)
         .then(() => {
             getData();
+            navigate("/read", { replace: true });
         })
     }
 
@@ -55,7 +59,7 @@ export default function Read() {
                 </Table.Header>
 
                 <Table.Body>
-                    {APIData.map((data) => {
+                    {APIData.length && APIData.map((data) => {
                         return (
                             <Table.Row key={data.id}>
                                 <Table.Cell>{data.id}</Table.Cell>
