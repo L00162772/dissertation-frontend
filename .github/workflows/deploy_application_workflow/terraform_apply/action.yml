@@ -34,7 +34,7 @@ runs:
 
       - name: Terraform Apply
         #if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: cd terraform && terraform apply -auto-approve -replace=archive_file.zip_frontend_canary_lambda -parallelism=20
+        run: cd terraform && terraform apply -auto-approve -replace=archive_file.zip_frontend_canary_lambda 
         shell: bash          
 
       - name: Get Cloudfront Distribution Id
