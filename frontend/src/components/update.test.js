@@ -69,19 +69,19 @@ describe('<Update /> with no props', () => {
     expect(input.value).toBe('last name')
   });
 
-  it('should have phoneNumber field', () => {
+  it('should have country field', () => {
     render(<Router><Update /></Router>);
-    const input = screen.getByTestId('phoneNumber');
+    const input = screen.getByTestId('country');
     expect(input).toBeInTheDocument()
-    expect(input).toHaveAttribute('placeholder',  'Phone Number')
+    expect(input).toHaveAttribute('placeholder',  'Country')
     expect(input).toHaveAttribute('type',  'text')
   });
 
-  it('should accept changes in phoneNumber field', () => {
+  it('should accept changes in country field', () => {
     render(<Router><Update /></Router>);
-    const input = screen.getByTestId('phoneNumber')
-    fireEvent.change(input, {target: {value: 'phone number'}})
-    expect(input.value).toBe('phone number')
+    const input = screen.getByTestId('country')
+    fireEvent.change(input, {target: {value: 'country'}})
+    expect(input.value).toBe('country')
   });
 
   it('should have submit button', () => {

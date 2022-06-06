@@ -69,11 +69,11 @@ describe('<Create /> with no props', () => {
     expect(input.value).toBe('last name')
   });
 
-  it('should have phoneNumber field', () => {
+  it('should have country field', () => {
     render(<Router><Create /></Router>);
-    const input = screen.getByTestId('phoneNumber')
-    fireEvent.change(input, {target: {value: 'phone number'}})
-    expect(input.value).toBe('phone number')
+    const input = screen.getByTestId('country')
+    fireEvent.change(input, {target: {value: 'country'}})
+    expect(input.value).toBe('country')
   });
  
   it('should have submit button', () => {

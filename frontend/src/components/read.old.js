@@ -24,7 +24,7 @@ afterEach(() => {
             id: 1,
             firstName: 'First Name',
             lastName: 'Last Name',
-            phoneNumber: '123456789'
+            country: '123456789'
           },
         ]
       }

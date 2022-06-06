@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Create() {
     let navigate = useNavigate();
-    const [phoneNumber, setPhoneNumber] = useState('');
+    const [country, setCountry] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
 
@@ -14,7 +14,7 @@ export default function Create() {
         axios.post(`https://backend.atu-dissertation.com/users`, {
             firstName,
             lastName,
-            phoneNumber
+            country
         }).then(() => {
             navigate('/read')
         })
@@ -31,8 +31,8 @@ export default function Create() {
                     <input type="text" placeholder='Last Name' data-testid="lastName" onChange={(e) => setLastName(e.target.value)}/>
                 </Form.Field>
                 <Form.Field>
-                    <label>Phone Number</label>
-                    <input type="text" placeholder='Phone Number' data-testid="phoneNumber" onChange={(e) => setPhoneNumber(e.target.value)}/>
+                    <label>Country</label>
+                    <input type="text" placeholder='Country' data-testid="country" onChange={(e) => setCountry(e.target.value)}/>
                 </Form.Field>                     
                 <Button onClick={postData} data-testid="submit" type='submit'>Submit</Button>
             </Form>

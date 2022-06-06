@@ -7,19 +7,19 @@ export default function Update() {
     let navigate = useNavigate();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState(false);
+    const [country, setCountry] = useState(false);
 
     useEffect(() => {
         setFirstName(localStorage.getItem('First Name'));
         setLastName(localStorage.getItem('Last Name'));
-        setPhoneNumber(localStorage.getItem('Phone Number'));
+        setCountry(localStorage.getItem('Country'));
     }, []);
 
     const updateAPIData = () => {
-        axios.put(`https://backend.atu-dissertation.com/users/${phoneNumber}`, {
+        axios.put(`https://backend.atu-dissertation.com/users/${country}`, {
             firstName,
             lastName,
-            phoneNumber
+            country
         }).then(() => {
             navigate('/read')
         })
@@ -36,8 +36,8 @@ export default function Update() {
                     <input placeholder='Last Name' type="text" data-testid="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)}/>
                 </Form.Field>
                 <Form.Field>
-                    <label>Phone Number</label>
-                    <input placeholder='Phone Number' type="text" data-testid="phoneNumber" value={lastName} onChange={(e) => setPhoneNumber(e.target.value)}/>
+                    <label>Country</label>
+                    <input placeholder='Country' type="text" data-testid="country" value={lastName} onChange={(e) => setCountry(e.target.value)}/>
                 </Form.Field>
                 <Button type='submit' data-testid="update" onClick={updateAPIData}>Update</Button>
             </Form>
