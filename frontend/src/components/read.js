@@ -17,7 +17,8 @@ export default function Read() {
     }, []);
 
     const setData = (data) => {
-        let { firstName, lastName, country } = data;
+        let { id, firstName, lastName, country } = data;
+        localStorage.setItem('Id', id);
         localStorage.setItem('First Name', firstName);
         localStorage.setItem('Last Name', lastName);
         localStorage.setItem('Country', country)
@@ -25,15 +26,15 @@ export default function Read() {
     }
 
     const getData = () => {
-        console.group("Her e1")
+        console.group("Here 1")
         axios.get(`https://backend.atu-dissertation.com/users`)
             .then((getData) => {
                 setAPIData(getData.data);
             })
     }
 
-    const onDelete = (country) => {
-        axios.delete(`https://backend.atu-dissertation.com/users/${country}`)
+    const onDelete = (id) => {
+        axios.delete(`https://backend.atu-dissertation.com/users/${id}`)
         .then(() => {
             getData();
         })
@@ -44,6 +45,7 @@ export default function Read() {
             <Table celled>
                 <Table.Header>
                     <Table.Row>
+                        <Table.HeaderCell>ID</Table.HeaderCell>
                         <Table.HeaderCell>First Name</Table.HeaderCell>
                         <Table.HeaderCell>Last Name</Table.HeaderCell>
                         <Table.HeaderCell>Country</Table.HeaderCell>
@@ -56,6 +58,7 @@ export default function Read() {
                     {APIData.map((data) => {
                         return (
                             <Table.Row key={data.id}>
+                                <Table.Cell>{data.id}</Table.Cell>
                                 <Table.Cell>{data.firstName}</Table.Cell>
                                 <Table.Cell>{data.lastName}</Table.Cell>
                                 <Table.Cell>{data.country}</Table.Cell>
@@ -63,7 +66,7 @@ export default function Read() {
                                         <Button onClick={() => setData(data)}>Update</Button>
                                     </Table.Cell>
                                 <Table.Cell>
-                                    <Button onClick={() => onDelete(data.country)}>Delete</Button>
+                                    <Button onClick={() => onDelete(data.id)}>Delete</Button>
                                 </Table.Cell>
                             </Table.Row>
                         )

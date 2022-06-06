@@ -5,18 +5,20 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Update() {
     let navigate = useNavigate();
+    const [id, setId] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [country, setCountry] = useState(false);
 
     useEffect(() => {
+        setId(localStorage.getItem('Id'));
         setFirstName(localStorage.getItem('First Name'));
         setLastName(localStorage.getItem('Last Name'));
         setCountry(localStorage.getItem('Country'));
     }, []);
 
     const updateAPIData = () => {
-        axios.put(`https://backend.atu-dissertation.com/users/${country}`, {
+        axios.put(`https://backend.atu-dissertation.com/users/${id}`, {
             firstName,
             lastName,
             country
