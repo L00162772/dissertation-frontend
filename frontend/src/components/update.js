@@ -19,6 +19,7 @@ export default function Update() {
 
     const updateAPIData = () => {
         axios.put(`https://backend.atu-dissertation.com/users/${id}`, {
+            id,
             firstName,
             lastName,
             country
@@ -39,7 +40,7 @@ export default function Update() {
                 </Form.Field>
                 <Form.Field>
                     <label>Country</label>
-                    <input placeholder='Country' type="text" data-testid="country" value={lastName} onChange={(e) => setCountry(e.target.value)}/>
+                    <input placeholder='Country' type="text" data-testid="country" value={country} onChange={(e) => setCountry(e.target.value)}/>
                 </Form.Field>
                 <Button type='submit' data-testid="update" onClick={updateAPIData}>Update</Button>
             </Form>
