@@ -8,7 +8,7 @@ export default function Read() {
 
     const [APIData, setAPIData] = useState([]);
     useEffect(() => {
-        axios.get(`https://backend.atu-dissertation.com/users`)
+        axios.get(`http://backend.atu-dissertation.com/users`)
             .then((response) => {
                 console.log(response.data)
                 console.log(response.data.Items)
@@ -26,7 +26,7 @@ export default function Read() {
     }
 
     const getData = () => {
-        axios.get(`https://backend.atu-dissertation.com/users`)
+        axios.get(`http://backend.atu-dissertation.com/users`)
             .then((getData) => {
                 console.log("here 2")
                 console.log(getData)
@@ -36,7 +36,7 @@ export default function Read() {
     }
 
     const onDelete = (id) => {
-        axios.delete(`https://backend.atu-dissertation.com/users/${id}`)
+        axios.delete(`http://backend.atu-dissertation.com/users/${id}`)
         .then(() => {
             getData();
             navigate("/read", { replace: true });

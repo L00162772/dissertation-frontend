@@ -11,7 +11,7 @@ export default function Create() {
 
 
     const postData = () => {
-        axios.post(`https://backend.atu-dissertation.com/users`, {
+        axios.post(`http://backend.atu-dissertation.com/users`, {
             id: Date.now(),
             firstName,
             lastName,
