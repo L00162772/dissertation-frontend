@@ -46,7 +46,8 @@ runs:
              cd frontend/build
              pwd
              ls -latr
-              sed -i 's/###AWS_REGION###/${{ inputs.aws_region }}/g' index.html
+             sed -i 's/###AWS_REGION###/${{ inputs.aws_region }}/g' index.html
+             sed -i 's/###AWS_REGION###/${{ inputs.aws_region }}/g' static/js/*
              aws s3 sync . s3://${{ inputs.aws_region }}-l00162772-frontend --delete
         shell: bash
 

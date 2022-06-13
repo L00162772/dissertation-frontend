@@ -39,6 +39,7 @@ function App() {
     <Router>
       <div className="main">
         <h2 className="main-header">React User Tracking</h2>
+        <h3 className="main-header">Region: ###AWS_REGION###</h3>
         <Link to={"./create"}>Create User</Link>  
         <Link to={"./read"}>List Users</Link>
         <div>
