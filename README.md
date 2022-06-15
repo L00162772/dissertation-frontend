@@ -1,10 +1,5 @@
 # dissertation-frontend
-Frontend Repository for the Dissertation
-See: https://andyjones.co/articles/react-aws-terraform-github-actions/
-See: https://stackoverflow.com/questions/65242830/in-a-github-actions-workflow-is-there-a-way-to-have-multiple-jobs-reuse-the-sam
-See: https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs#about-matrix-strategies && https://github.community/t/can-i-share-strategy-matrices-between-multiple-jobs/195827/5 && https://docs.github.com/en/actions/using-workflows/reusing-workflows
-See: https://stackoverflow.com/questions/67097661/how-to-pass-github-actions-user-input-into-a-python-script
-See: https://github.com/actions/setup-python
+Frontend Repository for the Dissertation practical
  
 ## Folder Structure
 terraform: Infrastructure as Code (IaC)
@@ -15,28 +10,32 @@ frontend: React frontend code
 Terraform: https://www.terraform.io/
 
 ### Run terraform code
+For best results - it is recommended to follow the deployment process outlined in the Wiki https://github.com/L00162772/dissertation-frontend/wiki/Deployment-Process for testing the code. Running terraform locally will required that some variables and attributes are tweaked. The code that is checked in has been tested using the deployment process and terraform cloud.
+
 #### Execute plan
+```
 cd terraform
 terraform init
 terraform plan
+```
 
 #### Create Infrastructure
+```
 cd terraform
 terraform apply --auto-approve
+```
 
 #### Destroy Infrastructure
+```
 cd terraform
 terraform destroy --auto-approve
+```
 
 
-## Frontend Instructions
-### Prequisite Software:
-NodeJs: https://nodejs.org/en/
-
-### Run frontend project
+### Run frontend project - Note: Backend project needs to already be running on AWS
+```
 cd frontend
 npm install
 npm start
-
-### ToDO
+```### ToDO
 Automate certificate approval after it is created
