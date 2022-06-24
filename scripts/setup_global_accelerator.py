@@ -9,6 +9,7 @@ application_type = os.environ['APPLICATION_TYPE']
 global_accelerator_region = "us-west-2"
 base_route53_region = "us-east-1"
 base_application_dns = "atu-dissertation.com."
+global_Accelerator_hosted_zone_id = 'Z2BJ6XQ5FK7U4H'
 
 print("In setup global accelerator")
 
@@ -52,6 +53,7 @@ for accelerator in list_accelerators_response['Accelerators']:
             accelerator_arn = temp_accelerator_arn
             accelerator_dns = accelerator['DnsName']
             print(f"accelerator_dns: {accelerator_dns}")
+            break
 
         print(f"has_application_type_tag: {has_application_type_tag}")
 
@@ -77,51 +79,49 @@ if not has_application_type_tag:
     accelerator_dns = create_accelerator_response['Accelerator']['DnsName']
     print(f"accelerator_dns: {accelerator_dns}")
     
-    hosted_zones_response = route53_client.list_hosted_zones()
-    print(f"hosted_zones_response: {hosted_zones_response}")
-    hosted_zone_id = ''
-    for hosted_zone in hosted_zones_response['HostedZones']:
-        print(f"hosted_zone: {hosted_zone}")
-        if hosted_zone['Name'].lower() == base_application_dns:
-            hosted_zone_id = hosted_zone['Id']
-            break
 
-    print(f"hosted_zone_id 1:{hosted_zone_id}")
-    hosted_zone_str = '/hostedzone/'
-    hosted_zone_id = hosted_zone_id[len(hosted_zone_str):]
-    print(f"hosted_zone_id 2:{hosted_zone_id}")
 
-    application_type_dns_name = f'{application_type}.atu-dissertation.com'
-    print(f"application_type_dns_name:{application_type_dns_name}")
+hosted_zones_response = route53_client.list_hosted_zones()
+print(f"hosted_zones_response: {hosted_zones_response}")
+hosted_zone_id = ''
+for hosted_zone in hosted_zones_response['HostedZones']:
+    print(f"hosted_zone: {hosted_zone}")
+    if hosted_zone['Name'].lower() == base_application_dns:
+        hosted_zone_id = hosted_zone['Id']
+        break
 
-    global_accelerator_dns_name = accelerator_dns
-    print(f"global_accelerator_dns_name:{global_accelerator_dns_name}")
+print(f"hosted_zone_id 1:{hosted_zone_id}")
+hosted_zone_str = '/hostedzone/'
+hosted_zone_id = hosted_zone_id[len(hosted_zone_str):]
+print(f"hosted_zone_id 2:{hosted_zone_id}")
 
-    alb_dns_name = f'{aws_region}-alb-{application_type}.atu-dissertation.com'
-    print(f"alb_dns_name:{alb_dns_name}")
-    
-    change_resource_record_sets_response = route53_client.change_resource_record_sets(
-        HostedZoneId=hosted_zone_id,
-        ChangeBatch={
-            'Changes': [
-                {
-                    'Action': 'CREATE',
-                    'ResourceRecordSet': {
-                        'Name': application_type_dns_name,
-                        'Type': 'A',
-                        'SetIdentifier': 'Simple',
-                        'Region': 'us-east-1',
-                        'AliasTarget': {
-                            'HostedZoneId': 'Z2BJ6XQ5FK7U4H',
-                            'DNSName': global_accelerator_dns_name,
-                            'EvaluateTargetHealth': True
+application_type_dns_name = f'{application_type}.atu-dissertation.com'
+print(f"application_type_dns_name:{application_type_dns_name}")
+
+global_accelerator_dns_name = accelerator_dns
+print(f"global_accelerator_dns_name:{global_accelerator_dns_name}")
+change_resource_record_sets_response = route53_client.change_resource_record_sets(
+            HostedZoneId=hosted_zone_id,
+            ChangeBatch={
+                'Changes': [
+                    {
+                        'Action': 'UPSERT',
+                        'ResourceRecordSet': {
+                            'Name': application_type_dns_name,
+                            'Type': 'A',
+                            'SetIdentifier': 'Simple',
+                            'Region': 'us-east-1',
+                            'AliasTarget': {
+                                'HostedZoneId': global_Accelerator_hosted_zone_id,
+                                'DNSName': global_accelerator_dns_name,
+                                'EvaluateTargetHealth': True
+                            }
                         }
-                    }
-                }, 
-            ]
-        }
+                    }, 
+                ]
+            }
     )
-    print(f"change_resource_record_sets_response: {change_resource_record_sets_response}")
+print(f"change_resource_record_sets_response: {change_resource_record_sets_response}")
 
 
 list_listeners_response = client.list_listeners( AcceleratorArn=accelerator_arn)
@@ -175,7 +175,7 @@ if not endpoint_group_found:
         EndpointConfigurations=[
             {
                 'EndpointId': load_balancer_arn,
-                'Weight': 123,
+                'Weight': 10,
                 'ClientIPPreservationEnabled': False
             },
         ],

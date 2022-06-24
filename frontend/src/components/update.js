@@ -1,27 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Checkbox, Form } from 'semantic-ui-react'
+import { Button, Form } from 'semantic-ui-react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 export default function Update() {
     let navigate = useNavigate();
-    const [id, setID] = useState(null);
+    const [id, setId] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [checkbox, setCheckbox] = useState(false);
+    const [country, setCountry] = useState(false);
 
     useEffect(() => {
-        setID(localStorage.getItem('ID'))
+        setId(localStorage.getItem('Id'));
         setFirstName(localStorage.getItem('First Name'));
         setLastName(localStorage.getItem('Last Name'));
-        setCheckbox(localStorage.getItem('Checkbox Value'));
+        setCountry(localStorage.getItem('Country'));
     }, []);
 
     const updateAPIData = () => {
-        axios.put(`https://627c358fe5ac2c452aed2ad9.mockapi.io/fakeData/${id}`, {
+        axios.put(`http://backend.atu-dissertation.com/users/${id}`, {
+            id,
             firstName,
             lastName,
-            checkbox
+            country
         }).then(() => {
             navigate('/read')
         })
@@ -38,7 +39,8 @@ export default function Update() {
                     <input placeholder='Last Name' type="text" data-testid="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)}/>
                 </Form.Field>
                 <Form.Field>
-                    <Checkbox label='I agree to the Terms and Conditions' data-testid="terms" checked={checkbox} onChange={() => setCheckbox(!checkbox)}/>
+                    <label>Country</label>
+                    <input placeholder='Country' type="text" data-testid="country" value={country} onChange={(e) => setCountry(e.target.value)}/>
                 </Form.Field>
                 <Button type='submit' data-testid="update" onClick={updateAPIData}>Update</Button>
             </Form>

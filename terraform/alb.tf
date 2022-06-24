@@ -37,23 +37,23 @@ resource "aws_lb_listener" "alb_http" {
   }
 }
 
-# resource "aws_lb_listener" "alb_https" {
-#   load_balancer_arn = aws_lb.alb.arn
-#   port              = "443"
-#   protocol          = "HTTPS"
-#   ssl_policy        = "ELBSecurityPolicy-2016-08"
-#   certificate_arn   = aws_acm_certificate.alb_cert.arn
+resource "aws_lb_listener" "alb_https" {
+  load_balancer_arn = aws_lb.alb.arn
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = aws_acm_certificate.alb_cert.arn
 
-#   default_action {
-#     type = "redirect"
+  default_action {
+    type = "redirect"
 
-#     redirect {
-#       host        = local.cloudfront_domain
-#       status_code = "HTTP_301"
-#     }
-#   }
+    redirect {
+      host        = local.cloudfront_domain
+      status_code = "HTTP_301"
+    }
+  }
 
-#   depends_on = [
-#     aws_acm_certificate.alb_cert
-#   ]
-# }
+  depends_on = [
+    aws_acm_certificate.alb_cert
+  ]
+}

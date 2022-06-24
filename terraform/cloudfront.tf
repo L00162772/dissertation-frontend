@@ -22,10 +22,11 @@ resource "aws_cloudfront_distribution" "cloudfront_distribution" {
   default_root_object = "index.html"
   aliases             = [local.cloudfront_domain]
   default_cache_behavior {
-    allowed_methods        = ["GET", "HEAD"]
-    cached_methods         = ["GET", "HEAD"]
-    target_origin_id       = local.s3_origin_id
-    viewer_protocol_policy = "redirect-to-https"
+    allowed_methods  = ["GET", "HEAD"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = local.s3_origin_id
+    # viewer_protocol_policy = "redirect-to-https"
+    viewer_protocol_policy = "allow-all"
     forwarded_values {
       query_string = false
       cookies {

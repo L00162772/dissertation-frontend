@@ -69,24 +69,19 @@ describe('<Update /> with no props', () => {
     expect(input.value).toBe('last name')
   });
 
-  it('should have terms field', () => {
+  it('should have country field', () => {
     render(<Router><Update /></Router>);
-    const input = screen.getByTestId('terms')
+    const input = screen.getByTestId('country');
     expect(input).toBeInTheDocument()
-    const checkboxLabel = input.children[1]
-    expect(checkboxLabel).toHaveTextContent("I agree to the Terms and Conditions")
+    expect(input).toHaveAttribute('placeholder',  'Country')
+    expect(input).toHaveAttribute('type',  'text')
   });
 
-  it('should accept changes to terms checkbox', () => {
+  it('should accept changes in country field', () => {
     render(<Router><Update /></Router>);
-    const input= screen.getByTestId('terms') 
-
-    const checkboxInput = input.children[0]
-    fireEvent.click(checkboxInput)
-    expect(input).toHaveAttribute('class',  'ui checked checkbox')
-
-    fireEvent.click(checkboxInput)
-    expect(input).toHaveAttribute('class',  'ui checkbox')
+    const input = screen.getByTestId('country')
+    fireEvent.change(input, {target: {value: 'country'}})
+    expect(input.value).toBe('country')
   });
 
   it('should have submit button', () => {

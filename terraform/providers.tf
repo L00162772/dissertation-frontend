@@ -4,7 +4,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 4.14.0"
+      version = ">= 4.17.0"
     }
   }
   required_version = ">= 1.1.9"
@@ -20,8 +20,16 @@ terraform {
 
 
 data "aws_caller_identity" "current" {}
+
 provider "aws" {
   region = var.aws_region
+
+  skip_requesting_account_id  = true # this can be tricky
+  skip_get_ec2_platforms      = true
+  skip_metadata_api_check     = true
+  skip_region_validation      = true
+  skip_credentials_validation = true
+
   #profile = "lyit"
   default_tags {
     tags = {

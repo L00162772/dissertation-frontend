@@ -24,7 +24,7 @@ afterEach(() => {
             id: 1,
             firstName: 'First Name',
             lastName: 'Last Name',
-            checkbox: 'Checked'
+            country: '123456789'
           },
         ]
       }
