@@ -22,9 +22,9 @@ jobs:
         working-directory: ./frontend     
 
       # Test the React app
-      # - name: Test static build
-      #   run: yarn test 
-      #   working-directory: ./frontend    
+      - name: Test static build
+        run: yarn test 
+        working-directory: ./frontend    
       # # Build the React app
       - name: Create React Application
         run: yarn build && pwd && ls -altr 
