@@ -25,6 +25,14 @@ jobs:
       - name: Test static build
         run: yarn test 
         working-directory: ./frontend    
+
+      - name: Unit Test Coverage Frontend
+        id: test-coverage
+        uses: johanvanhelden/gha-clover-test-coverage-check@v1
+        with:
+          percentage: "95"
+          filename: ./frontend/coverage/clover.xml  
+
       # # Build the React app
       - name: Create React Application
         run: yarn build && pwd && ls -altr 
