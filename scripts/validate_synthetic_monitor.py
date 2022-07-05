@@ -30,13 +30,26 @@ except:
 
 if canary_state is not None:
     print("Start - sleeping for 3 minutes")
-    time.sleep(60 * 3)
+    # time.sleep(60 * 3)
+    time.sleep(3)
     print("End - sleeping for 3 minutes")
 
     canary_runs = client.get_canary_runs(Name=synthetic_monitor_name)
     print(f"canary_runs:{canary_runs}")
 
+    passed_count = 0
+    failed_count = 0
     for canary_run in canary_runs['CanaryRuns']:
         print(f"canary_run: {canary_run}")
         state = canary_run['Status']['State']
         print(f"state: {state}")
+        if state.lower() == 'passed':
+            passed_count += 1
+        else:
+            failed_count += 1
+    
+    print(f"passed_count:{passed_count}, failed_count:{failed_count}")
+
+    if passed_count <= failed_count:
+        print("Errors have been logged - fail workflow")
+        raise("Exception checking Synthetic monitors")
