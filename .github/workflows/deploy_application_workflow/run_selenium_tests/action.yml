@@ -25,8 +25,11 @@ runs:
           architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
       - name: Install software
         run: sudo apt-get install -y chromium-browser
+        shell: bash
       - name: Install the necessary packages
         run: pip install requests webdriver-manager selenium pytest
+        shell: bash
       - name: Run the PytTest script
         run: pytest -rA
+        shell: bash
   
