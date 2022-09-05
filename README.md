@@ -1,5 +1,5 @@
 # dissertation-frontend
-Frontend Repository for the Dissertation practical
+Frontend Repository for the Dissertation practical 
  
 ## Folder Structure
 terraform: Infrastructure as Code (IaC)
